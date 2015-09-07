@@ -179,11 +179,11 @@ function downloadSource(loadUrl, succCallback, errCallback) {
 	var dtask = plus.downloader.createDownload(loadUrl, {}, function(d, status) {
 		if (status == 200) {
 			//下载成功
-			console.log('下载成功:"_downloads/" + filename');
+			console.log('下载成功:"_downloads/"' + d.filename);
 			succCallback(d.filename);
 		} else {
 			//下载失败,需删除本地临时文件,否则下次进来时会检查到图片已存在
-			console.log('下载失败:"_downloads/" + filename');
+			console.log('下载失败:"_downloads/"' + d.filename);
 			//dtask.abort();//文档描述:取消下载,删除临时文件;(但经测试临时文件没有删除,故使用delFile()方法删除);
 			errCallback();
 		}
@@ -276,7 +276,7 @@ function saveBookIdsInStorage(ids){
 }
 
 function getBookIdsFromStorage(){
-	return window.localStorage.getItem('bookIds____')
+	return window.localStorage.getItem('bookIds____');
 }
 
 /**

@@ -56,7 +56,7 @@
 
 	<script id="book-temp-id" type="text/html">
 		<li class="mui-table-view-cell mui-media">
-			<a data-id='{id}' data-name='{name}' data-html-name='{htmlName}' data-img-path='{imgPath}' data-category-id='{dicCategoryId}' data-json='{jsonList}' data-desc='{desc}' data-is-download='{isDownload}' download-start='false'>
+			<a data-id='{id}' data-name='{name}' data-html-dist='{html_dist}' data-html-name='{html_name}' data-img-path='{img_path}' data-category-id='{dic_category_id}' data-json='{json}' data-desc='{desc}' data-is-download='{isDownload}' download-start='false'>
 				<img id="img-{id}" class="mui-media-object mui-pull-left">
 				<div class="mui-media-body">
 					{name}
@@ -72,7 +72,7 @@
     	描述：图书列表
     -->
 	<script type="text/javascript" src="../js/jquery.min.js" type="text/javascript" charset="UTF-8"></script>
-	<script type="text/javascript" src="http://192.168.1.110:3000/rpc/helper.js" type="text/javascript" charset="UTF-8"></script>
+	<script type="text/javascript" src="http://192.168.0.102:3000/rpc/helper.js" type="text/javascript" charset="UTF-8"></script>
 	<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../js/routes.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
@@ -94,24 +94,21 @@
 		 */
 		function initDom() {
 				listPdf(window.categoryId, function(data) {
-					console.log(JSON.stringify(data))
 					if (data.length > 0) {
 						var htmlStr = '';
 						for (var i = 0; i < data.length; i++) {
 							var book = data[i];
-							console.log(JSON.stringify(book))
 							var myBooks = getBookIdsFromStorage();
-							
-							console.log(JSON.parse(myBooks).length )
-							if (JSON.parse(myBooks).length != 0 && myBooks.toString().contains(book.id)) {
+							if (myBooks && myBooks.toString().indexOf(book.id)>-1) {
 								book.display = 'none';
 								book.isDownload = '1';
+							} else {
+								book.isDownload = '0';
 							}
 							var tempHtml = $id('book-temp-id').innerHTML;
 							htmlStr += render(tempHtml, book);
-							$id('books-id').innerHTML = htmlStr
+							$id('books-id').innerHTML = htmlStr;
 							book.imgPath = Routes.urls.book.bookUrl + book.img_path;
-							//book.imgPath = "http://pics.sc.chinaz.com/Files/pic/icons128/5911/o1.png";
 							setImg('img-' + book.id, book.imgPath);
 						}
 					} else {
@@ -136,16 +133,13 @@
 				var bookSelf = this;
 				//是否已经下载
 				var isDownload = bookSelf.getAttribute('data-is-download');
-				console.log(isDownload)
 					//书id
 				var bookId = bookSelf.getAttribute('data-id');
-				console.log(bookId)
 					//html的名字
 				var htmlName = bookSelf.getAttribute('data-html-name');
-				console.log(htmlName)
-					//服务器中书的下载地址
-				var loadUrl = Routes.urls.book.downloadBook + htmlName;
-				console.log(loadUrl)
+				var htmlDist = bookSelf.getAttribute('data-html-dist');
+				//服务器中书的下载地址
+				var loadUrl = Routes.urls.book.downloadBook + htmlDist + '/' + htmlName;
 					//没有下载，则提示下载，并开始下载，下载成功更新数据库中的下载状态
 				if (isDownload == '0') {
 					if (bookSelf.getAttribute('download-start') == 'true') {
@@ -160,9 +154,8 @@
 					//开始下载图书
 					downloadSource(loadUrl, function() {
 						var bookName = bookSelf.getAttribute('data-name');
-						console.log(bookName);
 						var dicCategoryId = bookSelf.getAttribute('data-category-id');
-						var imgPath = bookSelf.getAttibute('data-img-path');
+						var imgPath = bookSelf.getAttribute('data-img-path');
 						var jsonList = bookSelf.getAttribute('data-json');
 						var desc = bookSelf.getAttribute('data-desc');
 						var newBook = {};
@@ -170,15 +163,17 @@
 						//id,name,img_path,pdf_path,html_dist,html_name,dic_category_id,json,desc,status(0:无效,1:有效),is_download(0：没有下载，1：已经下载)
 						newBook.name = bookName;
 						newBook.imgPath = imgPath;
-						newBook.jsonList = jsonList;
 						newBook.desc = desc;
 						newBook.status = 1;
-						var jl = JSON.parse(jsonList);
+						newBook.htmlName = htmlName;
+						newBook.jsonList = jsonList;
+						var jl = jsonList.split(',');
 						var jll = jl.length;
-						var progress = 0;
+						var progress = 1;
 						for (var i = 0; i < jll; i++) {
+							if (i == 0) continue;
 							var suburl = jl[i];
-							suburl = Routes.urls.book.getBooks + suburl;
+							suburl = Routes.urls.book.getBooks + htmlDist + '/' + suburl;
 							downloadSource(suburl, function() {
 								progress += 1;
 								if (progress == jll) {
@@ -188,6 +183,7 @@
 										$id('img-' + bookId).classList.remove('donghua');
 										bookSelf.setAttribute('data-is-download', '1');
 										console.log('数据库更新成功');
+										saveBookIds();
 									});
 								}
 							});
@@ -213,6 +209,11 @@
 					});
 				}
 			});
+		}
+		var oldBack = mui.back;
+		mui.back = function(){
+			plus.webview.getWebviewById('tab-webview-main-id').evalJS('window.myInit();');
+			oldBack();
 		}
 	</script>
 

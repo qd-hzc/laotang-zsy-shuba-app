@@ -121,14 +121,18 @@
 
 			function doSearch() {
 					document.getElementById("search-id").addEventListener('tap', function() {
-						if (toastNetworkInfo('当前网络不可用'))
+						if (toastNetworkInfo('当前网络不可用')) {
 							mui.openWindow({
 								id: 'search-id',
 								url: 'app/search.html',
 								show: {
 									duration: 200
 								}
-							})
+							});
+							setTimeout(function() {
+								plus.webview.getWebviewById('tab-webview-subpage-first.html').close();
+							}, 1000);
+						}
 					});
 				}
 				//退出

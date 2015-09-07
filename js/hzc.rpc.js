@@ -43,3 +43,12 @@ function listDelPdfId(callback) {
 function listPdf(categoryId, callback) {
 	rpc.listPdfByPid(categoryId, callback);
 }
+
+/**
+ * 搜索图书 
+ * @param {Object} keywords
+ * @param {Object} callback
+ */
+function searchBooks(keywords, callback) {
+	rpc.searchPdf(keywords, callback);
+}

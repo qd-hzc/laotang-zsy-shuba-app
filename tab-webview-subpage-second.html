@@ -87,7 +87,7 @@
 				mui('#book-list-id').on('tap', 'a', function() {
 					var title = this.getAttribute('data-title');
 					var categoryId = this.getAttribute('data-id');
-					if (toastNetworkInfo('当前网络不可用'))
+					if (toastNetworkInfo('当前网络不可用')) {
 						mui.openWindow({
 							id: 'book-list-id',
 							url: 'app/book-list.html',
@@ -98,7 +98,8 @@
 							show: {
 								duration: 200
 							}
-						})
+						});
+					}
 				});
 			}
 		</script>

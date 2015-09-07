@@ -43,8 +43,9 @@
         	描述：首页书吧
         -->
 		<script type="text/javascript" src="js/jquery.min.js" type="text/javascript" charset="UTF-8"></script>
-		<script type="text/javascript" src="http://192.168.1.110:3000/rpc/helper.js" type="text/javascript" charset="UTF-8"></script>
+		<script type="text/javascript" src="http://192.168.0.102:3000/rpc/helper.js" type="text/javascript" charset="UTF-8"></script>
 		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/routes.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/db/service.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/hzc.rpc.js" type="text/javascript" charset="utf-8"></script>
@@ -62,6 +63,7 @@
 			mui.plusReady(function() {
 				loadBooks(1);
 				openBook();
+				saveBookIds();
 			})
 			 window.count = 0;
 			 //分页查询我的book
@@ -94,24 +96,34 @@
 						window.start += 5;
 						var tempHtml = $id('book-temp-id').innerHTML;
 						$id('loading-id').style.display = 'none';
-						listDelPdfId(function(delData) {
-							var delDataStr = delData.toString();
-							console.log(delDataStr);
-							for (var i = 0; i < data.length; i++) {
-								var book = data[i];
-								if (!delDataStr.contains(book.id)) {
-									updateBookStatus(book.id, '0');
-									continue;
+						if (toastNetworkInfo('当前网络不可用')) {
+							listDelPdfId(function(delData) {
+								var delDataStr = delData.toString();
+								for (var i = 0; i < data.length; i++) {
+									var book = data[i];
+									if (delDataStr && !delDataStr.contains(book.id)) {
+										updateBookStatus(book.id, '0');
+										continue;
+									}
+									var li = document.createElement('li');
+									li.className = 'mui-table-view-cell mui-media';
+									li.innerHTML = render(tempHtml, book);
+									$id('books-id').appendChild(li);
+									book.imgPath = Routes.urls.book.bookUrl + book.imgPath;
+									setImg('img-' + book.id, book.imgPath);
 								}
-								var li = document.createElement('li');
-								li.className = 'mui-table-view-cell mui-media';
-								li.innerHTML = render(tempHtml, book);
-								$id('books-id').appendChild(li);
-								book.imgPath = Routes.urls.book.bookUrl + book.imgPath;
-								//book.imgPath = "http://pics.sc.chinaz.com/Files/pic/icons128/5911/o1.png";
-								setImg('img-' + book.id, book.imgPath);
-							}
-						});
+							});
+						}else{
+							for (var i = 0; i < data.length; i++) {
+									var book = data[i];
+									var li = document.createElement('li');
+									li.className = 'mui-table-view-cell mui-media';
+									li.innerHTML = render(tempHtml, book);
+									$id('books-id').appendChild(li);
+									book.imgPath = Routes.urls.book.bookUrl + book.imgPath;
+									setImg('img-' + book.id, book.imgPath);
+								}
+						}
 					});
 				}
 				/**

@@ -40,7 +40,9 @@
 				plus.screen.lockOrientation("landscape");
 				var self = plus.webview.currentWebview();
 				var _href = self.href;
-				//				_href = plus.io.convertLocalFileSystemURL('_downloads/scala-gailan.html');
+				window.scalKey = self.href.substr(_href.lastIndexOf('/') + 1);
+				console.log(window.scalKey)
+					//				_href = plus.io.convertLocalFileSystemURL('_downloads/scala-gailan.html');
 				mui.init({
 					swipeBack: false,
 					statusBarBackground: '#f7f7f7',
@@ -77,21 +79,23 @@
 				setTimeout(function() {
 					var pdfWin = plus.webview.getWebviewById("pdf-id");
 
-					function saveScroll() {
+					function saveScroll(sk) {
 						var scroll_top = window.pdf2htmlEX.defaultViewer.a.scrollTop;
-						window.localStorage.setItem(self.href, scroll_top);
+						console.log(sk);
+						window.localStorage.setItem(sk, scroll_top);
 					}
 					pdfWin.evalJS(saveScroll.toString());
 					var oldBack = mui.back;
 					mui.back = function() {
-						pdfWin.evalJS("window.saveScroll()");
+						pdfWin.evalJS("window.saveScroll('" + window.scalKey + "')");
 						plus.webview.currentWebview().opener().evalJS("mui.plusReady(function(){plus.screen.lockOrientation('portrait-primary');})")
 						oldBack();
 					};
-					pdfWin.evalJS(scrol.toString() + ";window.scrol();")
+					pdfWin.evalJS(scrol.toString() + ";window.scrol('" + window.scalKey + "');")
 
-					function scrol() {
-						var t = window.localStorage.getItem(self.href);
+					function scrol(sk) {
+						var t = window.localStorage.getItem(sk);
+						console.log(sk)
 						if (t) window.pdf2htmlEX.defaultViewer.a.scrollTop = parseFloat(t);
 					}
 
@@ -105,7 +109,7 @@
 							document.getElementsByTagName('head')[0].appendChild(newEle);
 							zoomMeta = document.getElementById('zoom-meta-id');
 						}
-						var sss = window.localStorage.getItem(self.href + 'scal');
+						var sss = window.localStorage.getItem(window.scalKey + 'scal');
 						if (sss) s = parseFloat(sss);
 						var c = 'width=device-width,initial-scale=' + s + ',minimum-scale=0.1,maximum-scale=10,user-scalable=yes';
 						zoomMeta.setAttribute('content', c);
@@ -114,7 +118,7 @@
 						document.getElementsByTagName('body')[0].appendChild(sty)
 					}
 					pdfWin.evalJS(zoom.toString());
-					var ss = window.localStorage.getItem(self.href + 'scal');
+					var ss = window.localStorage.getItem(window.scalKey + 'scal');
 					window.zoom = ss ? parseFloat(ss) : 1;
 					pdfWin.evalJS("window.zoom(" + ss + ")");
 					document.getElementById("zoom-jia").addEventListener('tap', function() {
@@ -128,7 +132,7 @@
 
 					function changeScale(scale) {
 						var s = scale;
-						window.localStorage.setItem(self.href + 'scal', s);
+						window.localStorage.setItem(window.scalKey + 'scal', s);
 						pdfWin.evalJS("window.zoom(" + s + ")");
 					}
 				}, 2000)

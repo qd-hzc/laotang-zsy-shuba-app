@@ -40,4 +40,4 @@ function update() {
 }
 
 
-mui.plusReady(update);
+//mui.plusReady(update);
