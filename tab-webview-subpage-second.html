@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>书架</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			body {
+				background-color: #efeff4;
+			}
+			h5 {
+				padding-top: 8px;
+				padding-bottom: 8px;
+				text-indent: 12px;
+			}
+			.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body {
+				font-size: 15px;
+				margin-top: 8px;
+				color: #333;
+			}
+			.my-mui-media-body {
+				height: 30px !important;
+				font-size: 18px !important;
+				line-height: 30px !important;
+			}
+			.mui-media-object {
+				width: 80% !important;
+			}
+			.mui-table-view-cell {
+				height: 160px !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<ul id="book-list-id" class="mui-table-view mui-grid-view" style="padding-top: 25px;">
+				<li class="mui-table-view-cell mui-media mui-col-xs-6">
+					<a href="javascript:void(0)" data-title='铁人精神' data-id='1'>
+						<img class="mui-media-object" src="images/index/tierenjingshen.png">
+						<div class="mui-media-body my-mui-media-body">铁人精神</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-6">
+					<a href="javascript:void(0)" data-title='国学' data-id='2'>
+						<img class="mui-media-object" src="images/index/guoxue.png">
+						<div class="mui-media-body my-mui-media-body">国学</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-6">
+					<a href="javascript:void(0)" data-title='励志' data-id='3'>
+						<img class="mui-media-object" src="images/index/lizhi.png">
+						<div class="mui-media-body my-mui-media-body">励志</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-6">
+					<a href="javascript:void(0)" data-title='企业管理' data-id='4'>
+						<img class="mui-media-object" src="images/index/qiyeguanli.png">
+						<div class="mui-media-body my-mui-media-body">企业管理</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+
+		<!--
+        	作者：HZC
+        	时间：2015-08-26
+        	描述：主页（图书分类）
+        -->
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				openList();
+			});
+			/**
+			 * 打开图书列表
+			 */
+			function openList() {
+				mui('#book-list-id').on('tap', 'a', function() {
+					var title = this.getAttribute('data-title');
+					var categoryId = this.getAttribute('data-id');
+					if (toastNetworkInfo('当前网络不可用'))
+						mui.openWindow({
+							id: 'book-list-id',
+							url: 'app/book-list.html',
+							extras: {
+								title: title,
+								categoryId: categoryId
+							},
+							show: {
+								duration: 200
+							}
+						})
+				});
+			}
+		</script>
+
+	</body>
+
+</html>
