@@ -5,7 +5,7 @@
  * =====================================================
  */
 (function(w) {
-	var domain = 'http://192.168.0.102:3000/'; //production
+	var domain = 'http://115.28.59.227:3333/'; //production
 	w.Routes = {
 		domain: domain,
 		urls: {
