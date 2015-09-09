@@ -37,12 +37,10 @@
 	<script type="text/javascript">
 		(function() {
 			mui.plusReady(function() {
-				plus.screen.lockOrientation("landscape");
+//				plus.screen.lockOrientation("landscape");
 				var self = plus.webview.currentWebview();
 				var _href = self.href;
 				window.scalKey = self.href.substr(_href.lastIndexOf('/') + 1);
-				console.log(window.scalKey)
-					//				_href = plus.io.convertLocalFileSystemURL('_downloads/scala-gailan.html');
 				mui.init({
 					swipeBack: false,
 					statusBarBackground: '#f7f7f7',
@@ -80,23 +78,21 @@
 					var pdfWin = plus.webview.getWebviewById("pdf-id");
 
 					function saveScroll(sk) {
-						var scroll_top = window.pdf2htmlEX.defaultViewer.a.scrollTop;
-						console.log(sk);
+						var scroll_top = window.pdf2htmlEX.defaultViewer.container.scrollTop;
 						window.localStorage.setItem(sk, scroll_top);
 					}
 					pdfWin.evalJS(saveScroll.toString());
 					var oldBack = mui.back;
 					mui.back = function() {
 						pdfWin.evalJS("window.saveScroll('" + window.scalKey + "')");
-						plus.webview.currentWebview().opener().evalJS("mui.plusReady(function(){plus.screen.lockOrientation('portrait-primary');})")
+//						plus.webview.currentWebview().opener().evalJS("mui.plusReady(function(){plus.screen.lockOrientation('portrait-primary');})")
 						oldBack();
 					};
 					pdfWin.evalJS(scrol.toString() + ";window.scrol('" + window.scalKey + "');")
 
 					function scrol(sk) {
 						var t = window.localStorage.getItem(sk);
-						console.log(sk)
-						if (t) window.pdf2htmlEX.defaultViewer.a.scrollTop = parseFloat(t);
+						if (t) window.pdf2htmlEX.defaultViewer.container.scrollTop = parseFloat(t);
 					}
 
 					function zoom(s) {

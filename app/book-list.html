@@ -140,6 +140,7 @@
 				var htmlDist = bookSelf.getAttribute('data-html-dist');
 				//服务器中书的下载地址
 				var loadUrl = Routes.urls.book.downloadBook + htmlDist + '/' + htmlName;
+				console.log(loadUrl)
 					//没有下载，则提示下载，并开始下载，下载成功更新数据库中的下载状态
 				if (isDownload == '0') {
 					if (bookSelf.getAttribute('download-start') == 'true') {

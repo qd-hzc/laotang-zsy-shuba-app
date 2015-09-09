@@ -138,7 +138,12 @@ function saveBook(book, callback) {
 	sDb.transaction(function(tx) {
 		var sql = "insert into dic_book (id,name,img_path,html_name,dic_category_id,json,desc,status) values (?,?,?,?,?,?,?,?)";
 		tx.executeSql(sql, [book.id, book.name, book.imgPath, book.htmlName, book.dicCategoryId, book.jsonList, book.desc, book.status],
-			callback, onError);
+			callback, function(tx, error){
+				var msg =error.message.toString();
+				if(msg.indexOf('unique')>0){
+					updateBookStatus(book.id,1,callback);
+				}
+			});
 	});
 }
 
@@ -203,9 +208,9 @@ function saveBookIds(callback) {
  * @param {Object} id
  * @param {Object} status ： 0：不可用，1：可用
  */
-function updateBookStatus(id, status) {
+function updateBookStatus(id, status,callback) {
 	sDb.transaction(function(tx) {
 		var sql = 'update dic_book set status = ? where id = ?';
-		tx.executeSql(sql, [status, id], onSucc, onError)
+		tx.executeSql(sql, [status, id], callback, onError)
 	})
 }

@@ -301,3 +301,4 @@ function saveUserId(userId){
 function getUserId(){
 	return window.localStorage.getItem('__userId__');
 }
+

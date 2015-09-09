@@ -62,10 +62,25 @@
 				myInit();
 				doSearch();
 			});
+			
 			/**
-			 * 初始化
-			 * 创建子页面，首个选项卡页面显示，其它均隐藏；
+			 * 监听设备方向信息 
 			 */
+			function initOrientation() {
+					plus.orientation.getCurrentOrientation(function(o) {
+						alert("Orientation\nAlpha:" + o.alpha + "\nBeta:" + o.beta + "\nGamma:" + o.gamma);
+					});
+					plus.orientation.watchOrientation(function(o) {
+						alert("Orientation\nAlpha:" + o.alpha + "\nBeta:" + o.beta + "\nGamma:" + o.gamma);
+					}, function(e) {
+						alert("Orientation error: " + e.message);
+					});
+				}
+				/**
+				 * 初始化
+				 * 创建子页面，首个选项卡页面显示，其它均隐藏；
+				 */
+
 			function myInit() {
 					//模拟首页点击
 					var defaultTab = document.getElementById("defaultTab");
