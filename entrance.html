@@ -22,40 +22,15 @@
 			mui.init();
 			mui.plusReady(function() {
 				initDom();
-				//				synDicBook();
 				update();
 			});
 			/**
-			 * 同步dic_book
-			 * 1：网络可用：同步数据
-			 * 2：网络不可用：不同步数据
+			 * 初始化
 			 */
-			function synDicBook() {
-					if (toastNetworkInfo('当前网络不可用')) {
-						mui.ajax(Routes.urls.book.getBooks, {
-							dataType: 'json', //服务器返回json格式数据
-							type: 'get', //HTTP请求类型
-							timeout: 10000, //超时时间设置为10秒；
-							success: function(data) {
-								//服务器返回响应，根据响应结果，分析是否登录成功；
-								synDicBook(data, function() {
-									console.log('同步数据成功');
-								});
-							},
-							error: function(xhr, type, errorThrown) {
-								//异常处理；
-								console.log(type);
-							}
-						});
-					}
-				}
-				/**
-				 * 初始化
-				 */
-
 			function initDom() {
 				var isInstall = checkIsInstall();
-				if (isInstall) {
+				var isUpdate = checkIsUpdate();
+				if (isInstall || isUpdate) { //安装后第一次打开
 					mui.openWindow({
 						id: 'guide-id',
 						url: 'app/guide.html',
@@ -64,34 +39,23 @@
 						}
 					});
 				} else {
-					var isUpdate = checkIsUpdate();
-					if (isUpdate) {
+					checkLoginStatus(function() {
 						mui.openWindow({
-							id: 'guide-id',
-							url: 'app/guide.html',
+							id: 'tab-webview-main-id',
+							url: 'tab-webview-main.html',
 							show: {
 								duration: 200
 							}
 						});
-					} else {
-						checkLoginStatus(function() {
-							mui.openWindow({
-								id: 'tab-webview-main-id',
-								url: 'tab-webview-main.html',
-								show: {
-									duration: 200
-								}
-							});
-						}, function() {
-							mui.openWindow({
-								id: 'login-id',
-								url: 'login.html',
-								show: {
-									duration: 200
-								}
-							});
+					}, function() {
+						mui.openWindow({
+							id: 'login-id',
+							url: 'login.html',
+							show: {
+								duration: 200
+							}
 						});
-					}
+					});
 				}
 			}
 		</script>
