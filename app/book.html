@@ -55,8 +55,8 @@
 				function initBookScal() {
 					var screenHeight = plus.screen.resolutionHeight;
 					var screenWidth = plus.screen.resolutionWidth;
-					var heightRate = screenHeight / 1000;
-					var widthRate = screenWidth / 1000;
+					var heightRate = screenHeight / 300;
+					var widthRate = screenWidth / 300;
 					return {
 						heightRate: heightRate,
 						widthRate: widthRate
@@ -141,12 +141,12 @@
 						//					window.zoom = window.screenRate.widthRate;
 						pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
 						document.getElementById("zoom-jia").addEventListener('tap', function() {
-							window.zoomSize += 0.05;
+							window.zoomSize += 0.1;
 							console.log(window.zoomSize);
 							changeScale(window.zoomSize);
 						});
 						document.getElementById("zoom-jian").addEventListener('tap', function() {
-							window.zoomSize -= 0.05;
+							window.zoomSize -= 0.1;
 							console.log(window.zoomSize)
 							changeScale(window.zoomSize)
 						})
