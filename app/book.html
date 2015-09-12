@@ -55,8 +55,8 @@
 				function initBookScal() {
 					var screenHeight = plus.screen.resolutionHeight;
 					var screenWidth = plus.screen.resolutionWidth;
-					var heightRate = screenHeight / 300;
-					var widthRate = screenWidth / 300;
+					var heightRate = screenHeight / 350;
+					var widthRate = screenWidth / 350;
 					return {
 						heightRate: heightRate,
 						widthRate: widthRate
@@ -182,7 +182,7 @@
 							//						window.localStorage.setItem(window.scalKe//y + 'scal', s);
 							pdfWin.evalJS("window.zoom(" + s + ")");
 						}
-					}, 5000)
+					}, 2000)
 				});
 			})();
 	</script>
