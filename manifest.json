@@ -163,7 +163,7 @@
 					"xxhdpi": "images/source/1080-1882-1.png"
 				}
 			},
-			"debug": true
+			"debug": false
 		}
 	}
 }
