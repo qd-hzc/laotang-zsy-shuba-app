@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>搜索图书</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			.mui-placeholder {
+				text-align: left !important;
+				padding-left: 5% !important;
+			}
+			.my-height {
+				top: -20px;
+				position: relative;
+				right: -45px;
+				height: 1px;
+				color: brown;
+			}
+			@-webkit-keyframes btnRotate {
+				0% {
+					-webkit-transform: rotateZ(0deg);
+				}
+				100% {
+					-webkit-transform: rotateZ(360deg);
+				}
+			}
+			.donghua {
+				-webkit-animation: btnRotate 1.5s linear infinite;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<button id="search-btn-id" style="color: #CF2D29;font-size: 15px;" type="button" class="mui-btn mui-btn-link mui-pull-right">
+				搜索
+			</button>
+			<div class="mui-input-row mui-search mui-pull-right" style="width: 70%;top: -43px;right: 40px;">
+				<input id="search-book-id" type="search" class="mui-input-clear" placeholder="">
+			</div>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view mui-table-view-chevron" id="books-id">
+			</ul>
+		</div>
+	</body>
+
+	<script id="book-temp-id" type="text/html">
+		<li class="mui-table-view-cell mui-media">
+			<a data-id='{id}' data-name='{name}' data-html-dist='{html_dist}' data-html-name='{html_name}' data-img-path='{img_path}' data-category-id='{dic_category_id}' data-json='{json}' data-desc='{desc}' data-is-download='{isDownload}' download-start='false'>
+				<img id="img-{id}" class="mui-media-object mui-pull-left">
+				<div class="mui-media-body">
+					{name}
+					<p class='mui-ellipsis'>{desc}</p>
+				</div>
+				<div id='download-{id}' class="mui-icon mui-icon-pulldown mui-pull-right my-height" style="display: {display};"></div>
+			</a>
+		</li>
+	</script>
+
+	<!--
+    	作者：HZC
+    	时间：2015-08-26
+    	描述：搜索图书
+    -->
+
+	<script type="text/javascript" src="../js/jquery.min.js" type="text/javascript" charset="UTF-8"></script>
+	<script type="text/javascript" src="http://oltop.cn:3333/rpc/helper.js" type="text/javascript" charset="UTF-8"></script>
+	<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/routes.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/db/service.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/hzc.rpc.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript">
+		mui.init();
+		mui.plusReady(function() {
+			var self = plus.webview.currentWebview();
+			openKeyBoard();
+			search();
+			openBook();
+		});
+		/**
+		 * 开始搜索
+		 */
+		function search() {
+				$id('search-btn-id').addEventListener('tap', function() {
+					var keyword = $id('search-book-id').value;
+					console.log('开始搜索关键字：' + keyword);
+					searchBooks(keyword, function(data) {
+						if (data.length > 0) {
+							var htmlStr = '';
+							for (var i = 0; i < data.length; i++) {
+								var book = data[i];
+								console.log(JSON.stringify(book))
+								var myBooks = getBookIdsFromStorage();
+								if (myBooks && myBooks.toString().indexOf(book.id) > -1) {
+									book.display = 'none';
+									book.isDownload = '1';
+								} else {
+									book.isDownload = '0';
+								}
+								var tempHtml = $id('book-temp-id').innerHTML;
+								htmlStr += render(tempHtml, book);
+								$id('books-id').innerHTML = htmlStr
+								book.imgPath = Routes.urls.book.bookUrl + book.img_path;
+								//book.imgPath = "http://pics.sc.chinaz.com/Files/pic/icons128/5911/o1.png";
+								setImg('img-' + book.id, book.imgPath);
+							}
+						} else {
+							$id('books-id').innerHTML = '<li class="mui-table-view-cell mui-media"><div style="text-align: center;margin-right: -60px;">没有相关图书</div></li>';
+						}
+					});
+				})
+			}
+			/**
+			 * 打开键盘
+			 */
+
+		function openKeyBoard() {
+				setTimeout(function() {
+					var Context = plus.android.importClass("android.content.Context");
+					var InputMethodManager = plus.android.importClass("android.view.inputmethod.InputMethodManager");
+					var main = plus.android.runtimeMainActivity();
+					var imm = main.getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+				}, 1000)
+				document.getElementById("search-book-id").focus();
+			}
+			/**
+			 * 打开书
+			 */
+
+		function openBook() {
+			mui('#books-id').on('tap', 'a', function() {
+				var bookSelf = this;
+				//是否已经下载
+				var isDownload = bookSelf.getAttribute('data-is-download');
+				//书id
+				var bookId = bookSelf.getAttribute('data-id');
+				//html的名字
+				var htmlName = bookSelf.getAttribute('data-html-name');
+				var htmlDist = bookSelf.getAttribute('data-html-dist');
+				//服务器中书的下载地址
+				var loadUrl = Routes.urls.book.downloadBook + htmlDist + '/' + htmlName;
+				//没有下载，则提示下载，并开始下载，下载成功更新数据库中的下载状态
+				if (isDownload == '0') {
+					if (bookSelf.getAttribute('download-start') == 'true') {
+						mui.toast('正在下载');
+						return;
+					}
+					mui.toast('开始下载');
+					setDownloadImage('img-' + bookId);
+					$id('img-' + bookId).classList.add('donghua');
+					$id('download-' + bookId).style.display = 'none';
+					bookSelf.setAttribute('download-start', 'true');
+					//开始下载图书
+					console.log(loadUrl)
+					downloadSource(loadUrl, function() {
+						var bookName = bookSelf.getAttribute('data-name');
+						var dicCategoryId = bookSelf.getAttribute('data-category-id');
+						var imgPath = bookSelf.getAttribute('data-img-path');
+						var jsonList = bookSelf.getAttribute('data-json');
+						var desc = bookSelf.getAttribute('data-desc');
+						var newBook = {};
+						newBook.id = bookId;
+						//id,name,img_path,pdf_path,html_dist,html_name,dic_category_id,json,desc,status(0:无效,1:有效),is_download(0：没有下载，1：已经下载)
+						newBook.name = bookName;
+						newBook.imgPath = imgPath;
+						newBook.desc = desc;
+						newBook.status = 1;
+						newBook.htmlName = htmlName;
+						newBook.jsonList = jsonList;
+						var jl = jsonList.split(',');
+						var jll = jl.length;
+						var progress = 1;
+						for (var i = 0; i < jll; i++) {
+							if (i == 0) continue;
+							var suburl = jl[i];
+							suburl = Routes.urls.book.getBooks + htmlDist + '/' + suburl;
+							downloadSource(suburl, function() {
+								progress += 1;
+								console.log(progress)
+								if (progress == jll) {
+									saveBook(newBook, function() {
+										mui.toast('下载成功');
+										setImg('img-' + bookId, imgPath);
+										$id('img-' + bookId).classList.remove('donghua');
+										bookSelf.setAttribute('data-is-download', '1');
+										console.log('数据库更新成功');
+										saveBookIds();
+									});
+								}
+							});
+						}
+					}, function() {
+						mui.toast('下载失败');
+						$id('download-' + bookId).style.display = 'block';
+						bookSelf.setAttribute('download-start', 'false');
+					});
+				} else {
+					var bookPath = DOWNLOADPATH + htmlName;
+					var absoluteBookPath = convertToAbsoluteURL(bookPath);
+					//已下载
+					mui.openWindow({
+						id: 'book-id',
+						url: 'book.html',
+						extras: {
+							href: absoluteBookPath
+						},
+						show: {
+							duration: 200
+						}
+					});
+				}
+			});
+		}
+		var oldBack = mui.back;
+		mui.back = function(){
+			plus.webview.getWebviewById('tab-webview-subpage-first.html').reload();
+			oldBack();
+		}
+	</script>
+
+</html>

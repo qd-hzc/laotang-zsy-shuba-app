@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>书</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			.my-font {
+				font-size: 28px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav" style="padding-top: 10px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="padding-top: 0px;margin-right: 20px;"></a>
+			<a id="zoom-jian" class="my-font">A-</a>
+			<a id="zoom-jia" class="my-font" style="margin-left: 15px;">A＋</a>
+			<a id="zhuanhan" class="mui-icon mui-icon-loop" style="padding-top: 0px !important;font-weight: 800;"></a>
+			<a onclick="hideBar()" class="mui-pull-right" style="padding-top: 0px;margin-right: 20px;">隐藏</a>
+		</header>
+		<div id="content" class="mui-content" style="margin: 0px;padding: 0px;width: 300px !important;overflow: hidden;">
+		</div>
+	</body>
+
+	<!--
+    	作者：HZC
+    	时间：2015-08-26
+    	描述：图书
+    -->
+	<script src="../js/mui.min.js"></script>
+
+	<script type="text/javascript">
+		/**
+		 * 隐藏标题栏
+		 */
+		function hideBar() {
+				document.getElementById("header").style.display = 'none';
+				var pdfW = plus.webview.getWebviewById('pdf-id');
+				pdfW.setStyle({
+					top: '0px',
+					bottom: 0,
+					bounce: 'vertical'
+				})
+				pdfW.hide();
+				pdfW.show();
+			}
+			(function() {
+				function initBookScal() {
+					var screenHeight = plus.screen.resolutionHeight;
+					var screenWidth = plus.screen.resolutionWidth;
+					var heightRate = screenHeight / 1000;
+					var widthRate = screenWidth / 1000;
+					return {
+						heightRate: heightRate,
+						widthRate: widthRate
+					};
+				}
+				mui.plusReady(function() {
+					//				plus.screen.lockOrientation("landscape");
+					var self = plus.webview.currentWebview();
+					var _href = self.href;
+					window.screenRate = initBookScal();
+					window.scalKey = self.href.substr(_href.lastIndexOf('/') + 1);
+					mui.init({
+						swipeBack: false,
+						statusBarBackground: '#f7f7f7',
+						gestureConfig: {
+							tap: true, //默认为true
+							doubletap: true, //默认为false
+							longtap: false, //默认为false
+							swipe: false, //默认为true
+							drag: false, //默认为true
+							hold: false, //默认为false，不监听
+							release: false //默认为false，不监听
+						},
+						subpages: [{
+							id: 'pdf-id',
+							url: _href,
+							styles: {
+								top: '45px',
+								bottom: 0,
+								bounce: 'vertical'
+							}
+						}]
+					});
+					/**
+					 * 显示标题栏
+					 */
+					function showBar() {
+						document.getElementById("header").style.display = 'block';
+						var pdfW = plus.webview.getWebviewById('pdf-id');
+						pdfW.setStyle({
+							top: '45px',
+							bottom: 0,
+							bounce: 'vertical'
+						})
+						pdfW.hide();
+						pdfW.show();
+					}
+					setTimeout(function() {
+						var pdfWin = plus.webview.getWebviewById("pdf-id");
+
+						function saveScroll(sk) {
+							var scroll_top = window.pdf2htmlEX.defaultViewer.container.scrollTop;
+							window.localStorage.setItem(sk, scroll_top);
+						}
+						pdfWin.evalJS(saveScroll.toString());
+						var oldBack = mui.back;
+						mui.back = function() {
+							pdfWin.evalJS("window.saveScroll('" + window.scalKey + "')");
+							plus.webview.currentWebview().opener().evalJS("mui.plusReady(function(){plus.screen.lockOrientation('portrait');})")
+							oldBack();
+						};
+						pdfWin.evalJS(scrol.toString() + ";window.scrol('" + window.scalKey + "');")
+
+						function scrol(sk) {
+							var t = window.localStorage.getItem(sk);
+							console.log(t + "==================")
+							if (t) window.pdf2htmlEX.defaultViewer.container.scrollTop = parseFloat(t);
+						}
+
+						function zoom(s) {
+							var meta = document.getElementsByTagName('meta')[1];
+							meta.setAttribute('name', 'viewport');
+							var c = 'width=device-width,initial-scale=' + s + ',minimum-scale=0.1,maximum-scale=10,user-scalable=yes';
+							meta.setAttribute('content', c)
+//							console.log(document.getElementsByTagName('head')[0].innerHTML)
+//							console.log(document.innerHTML)
+						}
+						pdfWin.evalJS(zoom.toString());
+						//					var ss = window.localStorage.getItem(window.scalKey + 'scal');
+						//					window.zoom = ss ? parseFloat(ss) : window.screenRate.widthRate;
+						window.zoomSize = window.zoomSize ? window.zoomSize : window.screenRate.widthRate;
+						//					window.zoom = window.screenRate.widthRate;
+						pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
+						document.getElementById("zoom-jia").addEventListener('tap', function() {
+							window.zoomSize += 0.05;
+							console.log(window.zoomSize);
+							changeScale(window.zoomSize);
+						});
+						document.getElementById("zoom-jian").addEventListener('tap', function() {
+							window.zoomSize -= 0.05;
+							console.log(window.zoomSize)
+							changeScale(window.zoomSize)
+						})
+						var orRes = true;
+						document.getElementById("zhuanhan").addEventListener('tap', function() {
+							if (orRes) {
+								plus.screen.lockOrientation("landscape");
+								window.zoomSize = window.screenRate.heightRate;
+								pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
+								orRes = false;
+							} else {
+								plus.screen.lockOrientation("portrait");
+								window.zoomSize = window.screenRate.widthRate;
+								pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
+								orRes = true;
+							}
+//							window.addEventListener("orientationchange", function() {
+//								var or = window.orientation;
+//								if (or == 0) { //竖向
+//									plus.screen.lockOrientation("portrait");
+//									window.zoomSize = window.screenRate.widthRate;
+//									pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
+//								} else { //横向
+//									plus.screen.lockOrientation("landscape");
+//									window.zoomSize = window.screenRate.heightRate;
+//									pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
+//								}
+//							}, false);
+						});
+
+						function changeScale(scale) {
+							var s = scale;
+							//						window.localStorage.setItem(window.scalKe//y + 'scal', s);
+							pdfWin.evalJS("window.zoom(" + s + ")");
+						}
+					}, 5000)
+				});
+			})();
+	</script>
+
+</html>

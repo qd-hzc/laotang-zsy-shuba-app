@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>入口</title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<!--
+        	作者：HZC
+        	时间：2015-08-26
+        	描述：入口页，显示背景图，建议做成动态，可以展示最新的新闻动态
+        -->
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/update.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/routes.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			mui.plusReady(function() {
+				initDom();
+				//				synDicBook();
+				update();
+			});
+			/**
+			 * 同步dic_book
+			 * 1：网络可用：同步数据
+			 * 2：网络不可用：不同步数据
+			 */
+			function synDicBook() {
+					if (toastNetworkInfo('当前网络不可用')) {
+						mui.ajax(Routes.urls.book.getBooks, {
+							dataType: 'json', //服务器返回json格式数据
+							type: 'get', //HTTP请求类型
+							timeout: 10000, //超时时间设置为10秒；
+							success: function(data) {
+								//服务器返回响应，根据响应结果，分析是否登录成功；
+								synDicBook(data, function() {
+									console.log('同步数据成功');
+								});
+							},
+							error: function(xhr, type, errorThrown) {
+								//异常处理；
+								console.log(type);
+							}
+						});
+					}
+				}
+				/**
+				 * 初始化
+				 */
+
+			function initDom() {
+				var isInstall = checkIsInstall();
+				if (isInstall) {
+					mui.openWindow({
+						id: 'guide-id',
+						url: 'app/guide.html',
+						show: {
+							duration: 200
+						}
+					});
+				} else {
+					var isUpdate = checkIsUpdate();
+					if (isUpdate) {
+						mui.openWindow({
+							id: 'guide-id',
+							url: 'app/guide.html',
+							show: {
+								duration: 200
+							}
+						});
+					} else {
+						checkLoginStatus(function() {
+							mui.openWindow({
+								id: 'tab-webview-main-id',
+								url: 'tab-webview-main.html',
+								show: {
+									duration: 200
+								}
+							});
+						}, function() {
+							mui.openWindow({
+								id: 'login-id',
+								url: 'login.html',
+								show: {
+									duration: 200
+								}
+							});
+						});
+					}
+				}
+			}
+		</script>
+	</body>
+
+</html>
