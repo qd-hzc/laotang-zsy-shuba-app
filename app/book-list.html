@@ -99,7 +99,7 @@
 						for (var i = 0; i < data.length; i++) {
 							var book = data[i];
 							var myBooks = getBookIdsFromStorage();
-							if (myBooks && myBooks.toString().indexOf(book.id)>-1) {
+							if (myBooks && myBooks.toString().indexOf(book.id) > -1) {
 								book.display = 'none';
 								book.isDownload = '1';
 							} else {
@@ -133,9 +133,9 @@
 				var bookSelf = this;
 				//是否已经下载
 				var isDownload = bookSelf.getAttribute('data-is-download');
-					//书id
+				//书id
 				var bookId = bookSelf.getAttribute('data-id');
-					//html的名字
+				//html的名字
 				var htmlName = bookSelf.getAttribute('data-html-name');
 				var htmlDist = bookSelf.getAttribute('data-html-dist');
 				//服务器中书的下载地址
@@ -147,6 +147,7 @@
 						mui.toast('正在下载');
 						return;
 					}
+					window.__downloading = true;
 					mui.toast('开始下载');
 					setDownloadImage('img-' + bookId);
 					$id('img-' + bookId).classList.add('donghua');
@@ -177,10 +178,11 @@
 							suburl = Routes.urls.book.getBooks + htmlDist + '/' + suburl;
 							downloadSource(suburl, function() {
 								progress += 1;
-								var jindu = (progress/jll)*100;
-								console.log(jindu+'---------------------------------------------------')
+								var jindu = (progress / jll) * 100;
+								console.log(jindu + '---------------------------------------------------')
 								if (progress == jll) {
 									saveBook(newBook, function() {
+										window.__downloading = false;
 										mui.toast('下载成功');
 										setImg('img-' + bookId, imgPath);
 										$id('img-' + bookId).classList.remove('donghua');
@@ -189,7 +191,8 @@
 										saveBookIds();
 									});
 								}
-							},function(){
+							}, function() {
+								window.__downloading = false;
 								mui.toast('下载失败');
 							});
 						}
@@ -216,9 +219,14 @@
 			});
 		}
 		var oldBack = mui.back;
-		mui.back = function(){
-			plus.webview.getWebviewById('tab-webview-subpage-first.html').reload();
-			oldBack();
+		mui.back = function() {
+			if (window.__downloading) {
+				var current = plus.webview.currentWebview();
+				current.hide('auto');
+			} else {
+				plus.webview.getWebviewById('tab-webview-subpage-first.html').reload();
+				oldBack();
+			}
 		}
 	</script>
 
