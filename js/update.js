@@ -3,7 +3,7 @@ var server = "http://lcsf.ccstudy.cn:8090/appInstall/shu/update.json"; //获取�
 /**
  * 自动验证，并更新app
  */
-function update() {
+function update(from) {
 	var osname = plus.os.name;
 	var appid = plus.runtime.appid;
 	/**
@@ -18,6 +18,8 @@ function update() {
 			var newVersion = parseInt(data.version.split('.').join(''));
 			var version = parseInt(plus.runtime.version.split('.').join(''));
 			if (newVersion <= version) {
+				if(from=="inner")
+				mui.toast('已是最新版本~');
 				return;
 			}
 			plus.ui.confirm(data.note, function(i) {
