@@ -169,18 +169,18 @@
 								pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
 								orRes = true;
 							}
-//							window.addEventListener("orientationchange", function() {
-//								var or = window.orientation;
-//								if (or == 0) { //竖向
-//									plus.screen.lockOrientation("portrait");
-//									window.zoomSize = window.screenRate.widthRate;
-//									pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
-//								} else { //横向
-//									plus.screen.lockOrientation("landscape");
-//									window.zoomSize = window.screenRate.heightRate;
-//									pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
-//								}
-//							}, false);
+							window.addEventListener("orientationchange", function() {
+								var or = window.orientation;
+								if (or == 0) { //竖向
+									plus.screen.lockOrientation("portrait");
+									window.zoomSize = window.screenRate.widthRate;
+									pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
+								} else { //横向
+									plus.screen.lockOrientation("landscape");
+									window.zoomSize = window.screenRate.heightRate;
+									pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
+								}
+							}, false);
 						});
 
 						function changeScale(scale) {

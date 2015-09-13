@@ -40,7 +40,7 @@
 
 	<body>
 		<div class="mui-content">
-			<ul id="book-list-id" class="mui-table-view mui-grid-view" style="padding-top: 25px;">
+			<ul id="book-list-id" class="mui-table-view mui-grid-view  mui-grid-9">
 				<li class="mui-table-view-cell mui-media mui-col-xs-6">
 					<a href="javascript:void(0)" data-title='铁人精神' data-id='1'>
 						<img class="mui-media-object" src="images/index/tierenjingshen.png">
@@ -66,6 +66,32 @@
 					</a>
 				</li>
 			</ul>
+			<!--<ul class="mui-table-view mui-grid-view mui-grid-9">
+				<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-6">
+					<a href="#">
+						<span class="mui-icon mui-icon-home"></span>
+						<div class="mui-media-body">铁人精神</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-6">
+					<a href="#">
+						<span class="mui-icon mui-icon-email"><span class="mui-badge">5</span></span>
+						<div class="mui-media-body">国学</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-6">
+					<a href="#">
+						<span class="mui-icon mui-icon-chatbubble"></span>
+						<div class="mui-media-body">励志</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-6">
+					<a href="#">
+						<span class="mui-icon mui-icon-location"></span>
+						<div class="mui-media-body">企业管理</div>
+					</a>
+				</li>
+			</ul>-->
 		</div>
 
 		<!--
@@ -92,7 +118,7 @@
 						var oldWin = plus.webview.getWebviewById('book-list-id-' + categoryId);
 						if (oldWin) {
 							oldWin.show();
-//							plus.webview.getWebviewById('tab-webview-main-id').reload();
+							//							plus.webview.getWebviewById('tab-webview-main-id').reload();
 							return;
 						}
 						mui.openWindow({
@@ -106,7 +132,7 @@
 								duration: 350
 							}
 						});
-//						plus.webview.getWebviewById('tab-webview-main-id').reload();
+						//						plus.webview.getWebviewById('tab-webview-main-id').reload();
 					}
 				});
 			}
