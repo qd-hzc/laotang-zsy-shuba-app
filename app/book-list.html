@@ -183,7 +183,7 @@
 								if (progress == jll) {
 									saveBook(newBook, function() {
 										window.__downloading = false;
-										mui.toast('下载成功');
+										mui.toast(bookName+',下载成功');
 										setImg('img-' + bookId, imgPath);
 										$id('img-' + bookId).classList.remove('donghua');
 										bookSelf.setAttribute('data-is-download', '1');
