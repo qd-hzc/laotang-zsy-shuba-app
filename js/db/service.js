@@ -188,14 +188,14 @@ function saveBookIds(callback) {
 	sDb.transaction(function(tx) {
 		var sql = 'select id from dic_book where status = 1';
 		tx.executeSql(sql, [], function(tx, rs) {
-			console.log(JSON.stringify(rs.rows));
+//			console.log(JSON.stringify(rs.rows));
 			if (rs.rows.length > 0) {
 				var ids = '';
 				for (var i = 0; i < rs.rows.length; i++) {
 					var bookId = rs.rows.item(i).id;
 					ids = bookId + ',' + ids;
 				}
-				console.log(ids);
+//				console.log(ids);
 				saveBookIdsInStorage(ids);
 			}
 			callback;

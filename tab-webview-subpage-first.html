@@ -85,7 +85,7 @@
 
 			function loadBooks(source) {
 					getMyBooks(window.start, function(data) {
-						console.log(data.length)
+//						console.log(data.length)
 						toastNetworkInfo('当前网络不可用');
 						if (data.length < 1) {
 							mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
@@ -102,7 +102,7 @@
 						if (toastNetworkInfo('当前网络不可用')) {
 							listDelPdfId(function(delData) {
 								var delDataStr = delData.toString();
-								console.log(delDataStr)
+//								console.log(delDataStr)
 								for (var i = 0; i < data.length; i++) {
 									var book = data[i];
 									if (delDataStr && !delDataStr.indexOf(book.id)>0) {

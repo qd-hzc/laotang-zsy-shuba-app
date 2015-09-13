@@ -97,13 +97,13 @@
 		function search() {
 				$id('search-btn-id').addEventListener('tap', function() {
 					var keyword = $id('search-book-id').value;
-					console.log('开始搜索关键字：' + keyword);
+//					console.log('开始搜索关键字：' + keyword);
 					searchBooks(keyword, function(data) {
 						if (data.length > 0) {
 							var htmlStr = '';
 							for (var i = 0; i < data.length; i++) {
 								var book = data[i];
-								console.log(JSON.stringify(book))
+//								console.log(JSON.stringify(book))
 								var myBooks = getBookIdsFromStorage();
 								if (myBooks && myBooks.toString().indexOf(book.id) > -1) {
 									book.display = 'none';
@@ -166,7 +166,7 @@
 					$id('download-' + bookId).style.display = 'none';
 					bookSelf.setAttribute('download-start', 'true');
 					//开始下载图书
-					console.log(loadUrl)
+//					console.log(loadUrl)
 					downloadSource(loadUrl, function() {
 						var bookName = bookSelf.getAttribute('data-name');
 						var dicCategoryId = bookSelf.getAttribute('data-category-id');
@@ -191,7 +191,7 @@
 							suburl = Routes.urls.book.getBooks + htmlDist + '/' + suburl;
 							downloadSource(suburl, function() {
 								progress += 1;
-								console.log(progress)
+//								console.log(progress)
 								if (progress == jll) {
 									saveBook(newBook, function() {
 										mui.toast(bookName + ',下载成功');

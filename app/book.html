@@ -148,12 +148,12 @@
 						pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
 						document.getElementById("zoom-jia").addEventListener('tap', function() {
 							window.zoomSize += 0.1;
-							console.log(window.zoomSize);
+//							console.log(window.zoomSize);
 							changeScale(window.zoomSize);
 						});
 						document.getElementById("zoom-jian").addEventListener('tap', function() {
 							window.zoomSize -= 0.1;
-							console.log(window.zoomSize)
+//							console.log(window.zoomSize)
 							changeScale(window.zoomSize)
 						})
 						var orRes = true;
