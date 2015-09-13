@@ -179,7 +179,8 @@
 			<div class="mui-slider-group">
 				<!-- 第一张 -->
 				<div class="mui-slider-item">
-					<div class="item-logo" style="background-image: url(../images/source/guide1.png);background-size:  auto;">
+					<div class="item-logo" style="background-image: url(../images/source/guide1.png);
+						background-repeat: no-repeat;background-size: 100% 100%;">
 						<a href="#">
 							<img src="../images/person/header-login.png" style="width:150px;margin-top: 10%;" />
 						</a>
@@ -192,7 +193,8 @@
 				</div>
 				<!-- 第二张 -->
 				<div class="mui-slider-item">
-					<div class="item-logo" style="background-image: url(../images/source/guide2.png);">
+					<div class="item-logo" style="background-image: url(../images/source/guide2.png);
+						background-repeat: no-repeat;background-size: 100% 100%;">
 						<a href="#">
 							<img src="../images/person/header-login.png" style="width:150px;margin-top: 10%;" />
 						</a>
@@ -204,8 +206,9 @@
 					</div>
 				</div>
 				<!-- 第三张 -->
-				<div class="mui-slider-item">
-					<div class="item-logo" style="background-image: url(../images/source/guide3.png);">
+				<!--<div class="mui-slider-item">
+					<div class="item-logo" style="background-image: url(../images/source/guide3.png);
+						background-repeat: no-repeat;background-size: 100% 100%;">
 						<a href="#">
 							<img src="../images/person/header-login.png" style="width:150px;margin-top: 10%;" />
 						</a>
@@ -215,10 +218,11 @@
 							<li class="animated bounceInRight">收藏你的挚爱</li>
 						</div>
 					</div>
-				</div>
+				</div>-->
 				<!-- 第四张 -->
 				<div class="mui-slider-item">
-					<div class="item-logo" style="background-color: #FCD208;">
+					<div class="item-logo" style="background-image: url(../images/source/guide3.png);
+						background-repeat: no-repeat;background-size: 100% 100%;">
 						<a href="#">
 							<img src="../images/person/header-login.png" style="width:150px;margin-top: 10%;" />
 						</a>
@@ -231,7 +235,7 @@
 			<div class="mui-slider-indicator">
 				<div class="mui-indicator mui-active"></div>
 				<div class="mui-indicator"></div>
-				<div class="mui-indicator"></div>
+				<!--<div class="mui-indicator"></div>-->
 				<div class="mui-indicator"></div>
 			</div>
 		</div>
@@ -241,7 +245,6 @@
         	时间：2015-08-26
         	描述：起始页
         -->
-
 		<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/db/dicBook.js" type="text/javascript" charset="utf-8"></script>
@@ -275,7 +278,7 @@
 			document.querySelector('.mui-slider').addEventListener('slide', function(event) {
 				//注意slideNumber是从0开始的；
 				var index = event.detail.slideNumber + 1;
-				if (index == 2 || index == 3) {
+				if (index == 2 /*|| index == 3*/) {
 					var item = document.getElementById("tips-" + index);
 					if (item.classList.contains("mui-hidden")) {
 						item.classList.remove("mui-hidden");
