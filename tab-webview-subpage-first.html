@@ -61,6 +61,7 @@
 				}
 			});
 			mui.plusReady(function() {
+				plus.screen.lockOrientation("portrait");
 				loadBooks(1);
 				openBook();
 				saveBookIds();
@@ -77,10 +78,6 @@
 						loadBooks(2);
 					}, 1000);
 				}
-			
-			window.__isNoMore = function(){
-					$id('books-id').innerHTML = '';
-			}
 				/**
 				 * 加载图书
 				 * @param {Object} source：来源：1，初始化，2，上拉刷新

@@ -78,6 +78,7 @@
 		<script type="text/javascript">
 			mui.init();
 			mui.plusReady(function() {
+				plus.screen.lockOrientation("portrait");
 				openList();
 			});
 			/**
@@ -89,7 +90,11 @@
 					var categoryId = this.getAttribute('data-id');
 					if (toastNetworkInfo('当前网络不可用')) {
 						var oldWin = plus.webview.getWebviewById('book-list-id-' + categoryId);
-						if (oldWin) return oldWin.show();
+						if (oldWin) {
+							oldWin.show();
+//							plus.webview.getWebviewById('tab-webview-main-id').reload();
+							return;
+						}
 						mui.openWindow({
 							id: 'book-list-id-' + categoryId,
 							url: 'app/book-list.html',
@@ -101,6 +106,7 @@
 								duration: 350
 							}
 						});
+//						plus.webview.getWebviewById('tab-webview-main-id').reload();
 					}
 				});
 			}

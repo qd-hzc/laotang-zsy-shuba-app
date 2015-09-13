@@ -220,6 +220,8 @@
 		}
 		var oldBack = mui.back;
 		mui.back = function() {
+			//plus.webview.getWebviewById('tab-webview-main-id').evalJS("mui.plusReady(function(){plus.screen.lockOrientation('portrait');})")
+			//plus.webview.getWebviewById('tab-webview-main-id').reload();
 			if (window.__downloading) {
 				var current = plus.webview.currentWebview();
 				current.hide('auto');
