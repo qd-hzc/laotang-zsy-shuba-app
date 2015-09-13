@@ -74,6 +74,7 @@
 			swipeBack: true //启用右滑关闭功能
 		});
 		mui.plusReady(function() {
+			plus.screen.lockOrientation("portrait");
 			var self = plus.webview.currentWebview();
 			callPhone();
 			checkUpdate();

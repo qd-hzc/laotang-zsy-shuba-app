@@ -14,15 +14,21 @@
 			.my-font {
 				font-size: 28px;
 			}
+			.my-A{
+				height: 80%;
+			}
 		</style>
 	</head>
 
 	<body>
 		<header id="header" class="mui-bar mui-bar-nav" style="padding-top: 10px;">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="padding-top: 0px;margin-right: 20px;"></a>
-			<a id="zoom-jian" class="my-font">A-</a>
-			<a id="zoom-jia" class="my-font" style="margin-left: 15px;">A＋</a>
-			<a id="zhuanhan" class="mui-icon mui-icon-loop" style="padding-top: 0px !important;font-weight: 800;"></a>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="padding-top: 0px;margin-right: 5px;"></a>
+			<!--<a id="zoom-jian" class="my-font">A-</a>-->
+			<img id="zoom-jia" src="../images/common/A+.png" class="my-A"/>
+			<!--<a id="zoom-jia" class="my-font" style="margin-left: 15px;">A＋</a>-->
+			<img id="zoom-jian" src="../images/common/A-.png" class="my-A"/>
+			<!--<a id="zhuanhan" class="mui-icon mui-icon-loop" style="padding-top: 0px !important;font-weight: 800;"></a>-->
+			<img id="zhuanhan" src="../images/common/zhuanhuan.png" class="my-A"/>
 			<a onclick="hideBar()" class="mui-pull-right" style="padding-top: 0px;margin-right: 20px;">隐藏</a>
 		</header>
 		<div id="content" class="mui-content" style="margin: 0px;padding: 0px;width: 300px !important;overflow: hidden;">
@@ -114,6 +120,7 @@
 						pdfWin.evalJS(saveScroll.toString());
 						var oldBack = mui.back;
 						mui.back = function() {
+//							plus.screen.lockOrientation("portrait");
 							pdfWin.evalJS("window.saveScroll('" + window.scalKey + "')");
 							plus.webview.currentWebview().opener().evalJS("mui.plusReady(function(){plus.screen.lockOrientation('portrait');})")
 							oldBack();
@@ -122,7 +129,6 @@
 
 						function scrol(sk) {
 							var t = window.localStorage.getItem(sk);
-							console.log(t + "==================")
 							if (t) window.pdf2htmlEX.defaultViewer.container.scrollTop = parseFloat(t);
 						}
 
