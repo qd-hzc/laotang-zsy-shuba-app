@@ -1,4 +1,4 @@
-var server = "http://lcsf.ccstudy.cn:8090/appInstall/shu/update.json"; //获取升级描述文件服务器地址
+var server = "http://astroway.net:8090/appInstall/shu/update.json"; //获取升级描述文件服务器地址
 
 /**
  * 自动验证，并更新app
