@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>主页</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="css/mui.min.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="../css/app.css" />
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			.oa-contact-cell.mui-table .mui-table-cell {
+				padding: 11px 0;
+				vertical-align: middle;
+			}
+			.oa-contact-cell {
+				position: relative;
+				margin: -11px 0;
+			}
+			.oa-contact-avatar {
+				width: 75px;
+			}
+			.oa-contact-avatar img {
+				border-radius: 50%;
+			}
+			.oa-contact-content {
+				width: 100%;
+			}
+			.oa-contact-name {
+				margin-right: 20px;
+			}
+			.oa-contact-name,
+			oa-contact-position {
+				float: left;
+			}
+			body {
+				background-color: #efeff4;
+			}
+			h5 {
+				padding-top: 8px;
+				padding-bottom: 8px;
+				text-indent: 12px;
+			}
+			.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body {
+				font-size: 15px;
+				margin-top: 8px;
+				color: #333;
+			}
+			.my-mui-media-body {
+				height: 30px !important;
+				font-size: 18px !important;
+				line-height: 30px !important;
+			}
+			.mui-media-object {
+				width: 80% !important;
+			}
+			/*.mui-table-view-cell {
+				height: 160px !important;
+			}*/
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">石油书吧</h1>
+		</header>
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item mui-active" href="#tabbar">
+				<span class="mui-icon mui-icon-contact" style="font-weight: bolder"></span>
+				<span class="mui-tab-label" style="font-weight: bolder">书&nbsp;&nbsp;&nbsp;&nbsp;吧</span>
+			</a>
+			<a class="mui-tab-item" href="#tabbar-with-chat">
+				<span class="mui-icon mui-icon-email" style="font-weight: bolder"></span>
+				<span class="mui-tab-label" style="font-weight: bolder">书&nbsp;&nbsp;&nbsp;&nbsp;架</span>
+			</a>
+			<a class="mui-tab-item" href="#tabbar-with-map">
+				<span class="mui-icon mui-icon-gear" style="font-weight: bolder"></span>
+				<span class="mui-tab-label" style="font-weight: bolder">设&nbsp;&nbsp;&nbsp;&nbsp;置</span>
+			</a>
+		</nav>
+		<div class="mui-content">
+			<!--
+            	描述：书吧
+            -->
+			<div id="tabbar" class="mui-control-content mui-active">
+				<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+					<div class="mui-scroll" style="margin-top: 15px;">
+						<ul id="books-id" class="mui-table-view mui-table-view-chevron">
+							<li id="loading-id" class="mui-table-view-cell mui-media">
+								<div style="text-align: center;margin-right: -60px;">加载中...</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!--
+            	描述：书架
+            -->
+			<div id="tabbar-with-chat" class="mui-control-content">
+				<ul id="book-list-id" class="mui-table-view mui-grid-view  mui-grid-9">
+					<li class="mui-table-view-cell mui-media mui-col-xs-6">
+						<a href="javascript:void(0)" data-title='铁人精神' data-id='1'>
+							<img class="mui-media-object" src="images/index/tierenjingshen.png">
+							<div class="mui-media-body my-mui-media-body">铁人精神</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-6">
+						<a href="javascript:void(0)" data-title='国学' data-id='2'>
+							<img class="mui-media-object" src="images/index/guoxue.png">
+							<div class="mui-media-body my-mui-media-body">国学</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-6">
+						<a href="javascript:void(0)" data-title='励志' data-id='3'>
+							<img class="mui-media-object" src="images/index/lizhi.png">
+							<div class="mui-media-body my-mui-media-body">励志</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-6">
+						<a href="javascript:void(0)" data-title='企业管理' data-id='4'>
+							<img class="mui-media-object" src="images/index/qiyeguanli.png">
+							<div class="mui-media-body my-mui-media-body">企业管理</div>
+						</a>
+					</li>
+				</ul>
+
+			</div>
+			<!--
+            	描述：设置
+            -->
+			<div id="tabbar-with-map" class="mui-control-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<ul class="mui-table-view" style="margin-top: 20px;">
+							<li class="mui-table-view-cell">
+								<a id="tel" class="mui-navigate-right">
+									客服电话
+								</a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a id="feedback-btn" data-href="app/feedback.html" class="mui-navigate-right">
+									问题反馈
+								</a>
+							</li>
+						</ul>
+						<ul class="mui-table-view" style="margin-top: 20px;">
+							<li class="mui-table-view-cell">
+								<a id="update" class="mui-navigate-right">检查更新</a>
+							</li>
+						</ul>
+						<ul class="mui-table-view" style="margin-top: 25px;">
+							<li class="mui-table-view-cell">
+								<a onclick="logout()" data-href="logout" style="text-align: center;color: #FF3B30;">
+								退出登录
+							</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script id="book-temp-id" type="text/html">
+		<a data-id='{id}' data-is-dowanload='{isDownload}' download-start='false' data-html-name='{htmlName}'>
+			<img id="img-{id}" class="mui-media-object mui-pull-left">
+			<div class="mui-media-body">
+				{name}
+				<p class='mui-ellipsis'>{desc}</p>
+			</div>
+		</a>
+	</script>
+
+	<!--
+    	作者：52529860@qq.com
+    	时间：2015-09-14
+    	描述：主页
+    -->
+
+	<script type="text/javascript" src="js/jquery.min.js" type="text/javascript" charset="UTF-8"></script>
+	<script type="text/javascript" src="http://oltop.cn:3333/rpc/helper.js" type="text/javascript" charset="UTF-8"></script>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/routes.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/update.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/db/service.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/hzc.rpc.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		mui.init({
+			swipeBack: false,
+			pullRefresh: {
+				container: '#pullrefresh',
+				up: {
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+		mui.plusReady(function() {
+			//			plus.screen.lockOrientation("portrait");
+			loadBooks(1);
+			openBook();
+			saveBookIds();
+			openList();
+			callPhone();
+			checkUpdate();
+			feedback();
+		});
+		window.count = 0;
+		 //分页查询我的book
+		window.start = 0;
+		/**
+		 * 上拉加载具体业务实现
+		 */
+		function pullupRefresh() {
+				setTimeout(function() {
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh((++window.count > 50)); //参数为true代表没有更多数据了。
+					loadBooks(2);
+				}, 1000);
+			}
+			/**
+			 * 加载图书
+			 * @param {Object} source：来源：1，初始化，2，上拉刷新
+			 */
+
+		function loadBooks(source) {
+				getMyBooks(window.start, function(data) {
+					console.log(data.length)
+					toastNetworkInfo('当前网络不可用');
+					if (data.length < 1) {
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+						if (source == 1) {
+							$id('books-id').innerHTML = '<li class="mui-table-view-cell mui-media"><div style="text-align: center;margin-right: -60px;">没有相关图书</div></li>';
+						} else {
+							mui.toast('没有更多数据了');
+						}
+						return;
+					}
+					window.start += 5;
+					var tempHtml = $id('book-temp-id').innerHTML;
+					try{
+						$id('loading-id').style.display = 'none';
+					}catch(e){}
+					if (toastNetworkInfo('当前网络不可用')) {
+						listDelPdfId(function(delData) {
+							var delDataStr = delData.toString();
+							//								console.log(delDataStr)
+							for (var i = 0; i < data.length; i++) {
+								var book = data[i];
+								if (delDataStr && !delDataStr.indexOf(book.id) > 0) {
+									updateBookStatus(book.id, '0', function() {});
+									continue;
+								}
+								var li = document.createElement('li');
+								li.className = 'mui-table-view-cell mui-media';
+								li.innerHTML = render(tempHtml, book);
+								$id('books-id').appendChild(li);
+								book.imgPath = Routes.urls.book.bookUrl + book.imgPath;
+								setImg('img-' + book.id, book.imgPath);
+							}
+						});
+					} else {
+						for (var i = 0; i < data.length; i++) {
+							var book = data[i];
+							var li = document.createElement('li');
+							li.className = 'mui-table-view-cell mui-media';
+							li.innerHTML = render(tempHtml, book);
+							$id('books-id').appendChild(li);
+							book.imgPath = Routes.urls.book.bookUrl + book.imgPath;
+							setImg('img-' + book.id, book.imgPath);
+						}
+					}
+				});
+			}
+			/**
+			 * 打开书
+			 */
+
+		function openBook() {
+				mui('#books-id').on('tap', 'a', function() {
+					var self = this;
+					var htmlName = self.getAttribute('data-html-name');
+					var bookPath = DOWNLOADPATH + htmlName;
+					var absoluteBookPath = convertToAbsoluteURL(bookPath);
+					mui.openWindow({
+						id: 'book-id',
+						url: 'app/book.html',
+						extras: {
+							href: absoluteBookPath
+						},
+						show: {
+							duration: 200
+						}
+					})
+				});
+			}
+			/**
+			 * 打开图书列表
+			 */
+
+		function openList() {
+				mui('#book-list-id').on('tap', 'a', function() {
+					var title = this.getAttribute('data-title');
+					var categoryId = this.getAttribute('data-id');
+					if (toastNetworkInfo('当前网络不可用')) {
+						var oldWin = plus.webview.getWebviewById('book-list-id-' + categoryId);
+						if (oldWin) {
+							oldWin.show();
+							//							plus.webview.getWebviewById('tab-webview-main-id').reload();
+							return;
+						}
+						mui.openWindow({
+							id: 'book-list-id-' + categoryId,
+							url: 'app/book-list.html',
+							extras: {
+								title: title,
+								categoryId: categoryId
+							},
+							show: {
+								duration: 350
+							}
+						});
+						//						plus.webview.getWebviewById('tab-webview-main-id').reload();
+					}
+				});
+			}
+			//客服电话
+
+		function callPhone() {
+			document.getElementById("tel").addEventListener('tap', function() {
+				plus.device.dial("114");
+			});
+		}
+
+		function feedback() {
+				document.getElementById("feedback-btn").addEventListener('tap', function() {
+					mui.openWindow({
+						id: 'feedback-id',
+						url: this.getAttribute('data-href'),
+						show: {
+							duration: 200
+						}
+					})
+				})
+			}
+			//检查更新
+
+		function checkUpdate() {
+				document.getElementById("update").addEventListener('tap', function() {
+					update("inner");
+				});
+			}
+			/**
+			 * 退出
+			 */
+
+		function logout() {
+				var btnArray = ['是', '否'];
+				mui.confirm('确定要退出登录吗？', '', btnArray, function(e) {
+					if (e.index == 0) {
+						setLoginStatus('false');
+						mui.openWindow({
+							id: 'login-id',
+							url: 'login.html',
+							show: {
+								duration: 200
+							}
+						});
+						plus.webview.getWebviewById('tab-webview-main-id').close()
+					}
+				});
+			}
+			//退出
+		var backButtonPress = 0;
+		mui.back = function(event) {
+			backButtonPress++;
+			if (backButtonPress > 1) {
+				plus.runtime.quit();
+			} else {
+				plus.nativeUI.toast('再按一次退出应用');
+			}
+			setTimeout(function() {
+				backButtonPress = 0;
+			}, 1000);
+			return false;
+		};
+	</script>
+
+</html>

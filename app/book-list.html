@@ -140,8 +140,8 @@
 				var htmlDist = bookSelf.getAttribute('data-html-dist');
 				//服务器中书的下载地址
 				var loadUrl = Routes.urls.book.downloadBook + htmlDist + '/' + htmlName;
-//				console.log(loadUrl)
-					//没有下载，则提示下载，并开始下载，下载成功更新数据库中的下载状态
+				//				console.log(loadUrl)
+				//没有下载，则提示下载，并开始下载，下载成功更新数据库中的下载状态
 				if (isDownload == '0') {
 					if (bookSelf.getAttribute('download-start') == 'true') {
 						mui.toast('正在下载');
@@ -183,7 +183,7 @@
 								if (progress == jll) {
 									saveBook(newBook, function() {
 										window.__downloading = false;
-										mui.toast(bookName+',下载成功');
+										mui.toast(bookName + ',下载成功');
 										setImg('img-' + bookId, imgPath);
 										$id('img-' + bookId).classList.remove('donghua');
 										bookSelf.setAttribute('data-is-download', '1');
@@ -226,7 +226,8 @@
 				var current = plus.webview.currentWebview();
 				current.hide('auto');
 			} else {
-				plus.webview.getWebviewById('tab-webview-subpage-first.html').reload();
+				//plus.webview.getWebviewById('tab-webview-subpage-first.html').reload();
+				plus.webview.currentWebview().opener().evalJS("document.getElementById('books-id').innerHTML = '';window.start = 0;window.loadBooks(1);");
 				oldBack();
 			}
 		}
