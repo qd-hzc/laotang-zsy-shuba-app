@@ -178,6 +178,14 @@
 		</a>
 	</script>
 
+	<script type="text/html" id="category-temp-id">
+		<!--<li class="mui-table-view-cell mui-media mui-col-xs-6">-->
+			<a href="javascript:void(0)" data-title='{name}' data-id='{id}'>
+				<img class="mui-media-object" id="img-category-{id}">
+				<div class="mui-media-body my-mui-media-body">{name}</div>
+			</a>
+		<!--</li>-->
+	</script>
 	<!--
     	作者：52529860@qq.com
     	时间：2015-09-14
@@ -206,6 +214,7 @@
 		mui.plusReady(function() {
 			//			plus.screen.lockOrientation("portrait");
 			loadBooks(1);
+//			initCategory();
 			openBook();
 			saveBookIds();
 			openList();
@@ -213,6 +222,32 @@
 			checkUpdate();
 			feedback();
 		});
+		/**
+		 * 初始化图书分类
+		 */
+		function initCategory() {
+			listCategory(function(data) {
+				console.log(JSON.stringify(data));
+				return;
+				var htmlStr = '';
+				//				<li class="mui-table-view-cell mui-media"><div style="text-align: center;margin-right: -60px;">数据加载中...</div></li>
+				if (data.length < 0) {
+					htmlStr = '<li class="mui-table-view-cell mui-media"><div style="text-align: center;margin-right: -60px;">没有相关数据</div></li>';
+					$id('book-list-id').innerHTML = htmlStr;
+					return;
+				}
+				var tempHtml = $id('category-temp-id').innerHTML;
+				for (var i = 0; i < data.length; i++) {
+					var category = data[i];
+					var li = document.createElement('li');
+					li.className = 'mui-table-view-cell mui-media mui-col-xs-6';
+					li.innerHTML = render(tempHtml, category);
+					$id('book-list-id').appendChild(li);
+					book.imgPath = Routes.urls.book.bookUrl + category.imgPath;
+					setImg('img-category-' + category.id, category.imgPath);
+				}
+			});
+		}
 		window.count = 0;
 		 //分页查询我的book
 		window.start = 0;
@@ -245,9 +280,9 @@
 					}
 					window.start += 5;
 					var tempHtml = $id('book-temp-id').innerHTML;
-					try{
+					try {
 						$id('loading-id').style.display = 'none';
-					}catch(e){}
+					} catch (e) {}
 					if (toastNetworkInfo('当前网络不可用')) {
 						listDelPdfId(function(delData) {
 							var delDataStr = delData.toString();

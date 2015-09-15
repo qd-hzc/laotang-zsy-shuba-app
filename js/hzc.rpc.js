@@ -52,3 +52,11 @@ function listPdf(categoryId, callback) {
 function searchBooks(keywords, callback) {
 	rpc.searchPdf(keywords, callback);
 }
+
+/**
+ * 查询图书分类
+ * @param {Object} callback
+ */
+function listCategory(callback){
+	rpc.listCategory(callback)
+}
