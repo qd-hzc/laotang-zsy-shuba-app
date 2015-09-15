@@ -5,7 +5,7 @@
  * =====================================================
  */
 (function(w) {
-	var domain = 'http://oltop.cn:3333/'; //production
+	var domain = 'http://192.168.2.132:3333/'; //production
 	w.Routes = {
 		domain: domain,
 		urls: {

@@ -57,6 +57,6 @@ function searchBooks(keywords, callback) {
  * 查询图书分类
  * @param {Object} callback
  */
-function listCategory(callback){
-	rpc.listCategory(callback)
+function listCategoryRpc(callback){
+	rpc.listCategory(callback);
 }
