@@ -70,14 +70,15 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
+			<a id="search-id" class="mui-icon mui-icon-search mui-pull-right" style="display: none;"></a>
 			<h1 class="mui-title">石油书吧</h1>
 		</header>
-		<nav class="mui-bar mui-bar-tab">
+		<nav class="mui-bar mui-bar-tab" id='menu-nav-id'>
 			<a class="mui-tab-item mui-active" href="#tabbar">
 				<span class="mui-icon mui-icon-contact" style="font-weight: bolder"></span>
 				<span class="mui-tab-label" style="font-weight: bolder">书&nbsp;&nbsp;&nbsp;&nbsp;吧</span>
 			</a>
-			<a class="mui-tab-item" href="#tabbar-with-chat">
+			<a data-search='true' class="mui-tab-item" href="#tabbar-with-chat">
 				<span class="mui-icon mui-icon-email" style="font-weight: bolder"></span>
 				<span class="mui-tab-label" style="font-weight: bolder">书&nbsp;&nbsp;&nbsp;&nbsp;架</span>
 			</a>
@@ -181,7 +182,7 @@
 	<script type="text/html" id="category-temp-id">
 		<!--<li class="mui-table-view-cell mui-media mui-col-xs-6">-->
 		<a href="javascript:void(0)" data-title='{name}' data-id='{id}'>
-			<img class="mui-media-object" id="img-category-{id}">
+			<img class="mui-media-object" id="img-category-{id}" style="width:130px !important;height: 80px !important;">
 			<div class="mui-media-body my-mui-media-body">{name}</div>
 		</a>
 		<!--</li>-->
@@ -193,7 +194,7 @@
     -->
 
 	<script type="text/javascript" src="js/jquery.min.js" type="text/javascript" charset="UTF-8"></script>
-	<script type="text/javascript" src="http://192.168.2.132:3333/rpc/helper.js" type="text/javascript" charset="UTF-8"></script>
+	<script type="text/javascript" src="http://oltop.cn:3333/rpc/helper.js" type="text/javascript" charset="UTF-8"></script>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/routes.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/update.js" type="text/javascript" charset="utf-8"></script>
@@ -221,13 +222,15 @@
 			callPhone();
 			checkUpdate();
 			feedback();
+			navTab();
+			doSearch();
 		});
 		/**
 		 * 初始化图书分类
 		 */
 		function initCategory() {
 			listCategoryRpc(function(data) {
-//				console.log(JSON.stringify(data));
+				//				console.log(JSON.stringify(data));
 				var htmlStr = '';
 				//				<li class="mui-table-view-cell mui-media"><div style="text-align: center;margin-right: -60px;">数据加载中...</div></li>
 				if (data.length < 1) {
@@ -236,11 +239,10 @@
 					return;
 				}
 				$id('book-list-id').innerHTML = '';
-				
 				var tempHtml = $id('category-temp-id').innerHTML;
 				for (var i = 0; i < data.length; i++) {
 					var category = data[i];
-//					console.log(JSON.stringify(category))
+					//					console.log(JSON.stringify(category))
 					var li = document.createElement('li');
 					li.className = 'mui-table-view-cell mui-media mui-col-xs-6';
 					li.innerHTML = render(tempHtml, category);
@@ -411,6 +413,37 @@
 							}
 						});
 						plus.webview.getWebviewById('tab-webview-main-id').close()
+					}
+				});
+			}
+			/**
+			 * 显示收藏
+			 */
+
+		function navTab() {
+				mui('#menu-nav-id').on('tap', 'a', function() {
+					var data = this.getAttribute('data-search');
+					if (data == 'true') {
+						$id('search-id').style.display = 'block';
+					} else {
+						$id('search-id').style.display = 'none';
+					}
+				})
+			}
+			/**
+			 * 点击搜索
+			 */
+
+		function doSearch() {
+				document.getElementById("search-id").addEventListener('tap', function() {
+					if (toastNetworkInfo('当前网络不可用')) {
+						mui.openWindow({
+							id: 'search-id',
+							url: 'app/search.html',
+							show: {
+								duration: 200
+							}
+						});
 					}
 				});
 			}

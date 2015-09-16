@@ -114,7 +114,8 @@
 						var pdfWin = plus.webview.getWebviewById("pdf-id");
 
 						function saveScroll(sk) {
-							var scroll_top = window.pdf2htmlEX.defaultViewer.a.scrollTop;
+//							var scroll_top = window.pdf2htmlEX.defaultViewer.container.scrollTop;
+							var scroll_top = window.document.getElementById('page-container').scrollTop;
 							window.localStorage.setItem(sk, scroll_top);
 						}
 						pdfWin.evalJS(saveScroll.toString());
@@ -129,7 +130,8 @@
 
 						function scrol(sk) {
 							var t = window.localStorage.getItem(sk);
-							if (t) window.pdf2htmlEX.defaultViewer.a.scrollTop = parseFloat(t);
+//							if (t) window.pdf2htmlEX.defaultViewer.container.scrollTop = parseFloat(t);
+							if(t) window.document.getElementById('page-container').scrollTop = parseFloat(t);
 						}
 
 						function zoom(s) {

@@ -76,7 +76,7 @@
     -->
 
 	<script type="text/javascript" src="../js/jquery.min.js" type="text/javascript" charset="UTF-8"></script>
-	<script type="text/javascript" src="http://192.168.2.132:3333/rpc/helper.js" type="text/javascript" charset="UTF-8"></script>
+	<script type="text/javascript" src="http://oltop.cn:3333/rpc/helper.js" type="text/javascript" charset="UTF-8"></script>
 	<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../js/routes.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
@@ -97,13 +97,13 @@
 		function search() {
 				$id('search-btn-id').addEventListener('tap', function() {
 					var keyword = $id('search-book-id').value;
-//					console.log('开始搜索关键字：' + keyword);
+					//					console.log('开始搜索关键字：' + keyword);
 					searchBooks(keyword, function(data) {
 						if (data.length > 0) {
 							var htmlStr = '';
 							for (var i = 0; i < data.length; i++) {
 								var book = data[i];
-//								console.log(JSON.stringify(book))
+								//								console.log(JSON.stringify(book))
 								var myBooks = getBookIdsFromStorage();
 								if (myBooks && myBooks.toString().indexOf(book.id) > -1) {
 									book.display = 'none';
@@ -166,7 +166,7 @@
 					$id('download-' + bookId).style.display = 'none';
 					bookSelf.setAttribute('download-start', 'true');
 					//开始下载图书
-//					console.log(loadUrl)
+					//					console.log(loadUrl)
 					downloadSource(loadUrl, function() {
 						var bookName = bookSelf.getAttribute('data-name');
 						var dicCategoryId = bookSelf.getAttribute('data-category-id');
@@ -191,7 +191,7 @@
 							suburl = Routes.urls.book.getBooks + htmlDist + '/' + suburl;
 							downloadSource(suburl, function() {
 								progress += 1;
-//								console.log(progress)
+								//								console.log(progress)
 								if (progress == jll) {
 									saveBook(newBook, function() {
 										mui.toast(bookName + ',下载成功');
@@ -227,8 +227,9 @@
 			});
 		}
 		var oldBack = mui.back;
-		mui.back = function(){
-			plus.webview.getWebviewById('tab-webview-subpage-first.html').reload();
+		mui.back = function() {
+			//			plus.webview.getWebviewById('tab-webview-subpage-first.html').reload();
+			plus.webview.currentWebview().opener().evalJS("document.getElementById('books-id').innerHTML = '';window.start = 0;window.loadBooks(1);");
 			oldBack();
 		}
 	</script>
