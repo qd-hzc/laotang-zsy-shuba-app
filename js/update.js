@@ -1,4 +1,4 @@
-var server = "http://astroway.net:8090/appInstall/shu/update.json"; //获取升级描述文件服务器地址
+var server = "http://bluejings.club:8090/bluejings/update.json"; //获取升级描述文件服务器地址
 
 /**
  * 自动验证，并更新app
@@ -13,17 +13,16 @@ function update(from) {
 
 	function updateHandler(respDataStr) {
 			var respData = eval('(' + respDataStr + ')');
-			//	if (appid != respData.appid) return; // 版本无更新，则直接返回
 			var data = respData[osname];
 			var newVersion = parseInt(data.version.split('.').join(''));
 			var version = parseInt(plus.runtime.version.split('.').join(''));
 			if (newVersion <= version) {
-				if(from=="inner")
-				mui.toast('已是最新版本~');
+				if (from == "inner")
+					mui.toast('已是最新版本~');
 				return;
 			}
 			plus.ui.confirm(data.note, function(i) {
-				if (0 == i) { // 点击了: 立即更新
+				if (0 == i.index) { // 点击了: 立即更新
 					plus.runtime.openURL(data.url);
 				}
 			}, data.title, ["立即更新", "取　　消"]);

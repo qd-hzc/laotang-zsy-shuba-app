@@ -170,13 +170,18 @@
 		</div>
 	</body>
 	<script id="book-temp-id" type="text/html">
-		<a data-id='{id}' data-is-dowanload='{isDownload}' download-start='false' data-html-name='{htmlName}'>
-			<img id="img-{id}" class="mui-media-object mui-pull-left">
-			<div class="mui-media-body">
-				{name}
-				<p class='mui-ellipsis'>{desc}</p>
-			</div>
-		</a>
+		<div class="mui-slider-right mui-disabled">
+			<div class="mui-btn mui-btn-red" data-id='{id}'>删除</div>
+		</div>
+		<div class="mui-slider-handle">
+			<a data-id='{id}' data-is-dowanload='{isDownload}' download-start='false' data-html-name='{htmlName}'>
+				<img id="img-{id}" class="mui-media-object mui-pull-left">
+				<div class="mui-media-body">
+					{name}
+					<p class='mui-ellipsis'>{desc}</p>
+				</div>
+			</a>
+		</div>
 	</script>
 
 	<script type="text/html" id="category-temp-id">
@@ -224,10 +229,34 @@
 			feedback();
 			navTab();
 			doSearch();
+			deleteBook();
+			//			update();
 		});
 		/**
-		 * 初始化图书分类
+		 * 删除图书
 		 */
+		function deleteBook() {
+				mui('#books-id').on('tap', '.mui-btn', function() {
+					var elem = this;
+					var btnArray = ['确认', '取消'];
+					mui.confirm('确认删除该条记录？', '', btnArray, function(e) {
+						if (e.index == 0) {
+							var bookId = elem.getAttribute('data-id');
+							updateBookStatus(bookId, 0, function() {
+								saveBookIds(function(){
+									console.log(22222)
+								})
+								var li = elem.parentElement.parentElement;
+								li.parentElement.removeChild(li);
+							});
+						}
+					});
+				});
+			}
+			/**
+			 * 初始化图书分类
+			 */
+
 		function initCategory() {
 			listCategoryRpc(function(data) {
 				//				console.log(JSON.stringify(data));
@@ -271,7 +300,6 @@
 
 		function loadBooks(source) {
 				getMyBooks(window.start, function(data) {
-					console.log(data.length);
 					toastNetworkInfo('当前网络不可用');
 					if (data.length < 1) {
 						mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);

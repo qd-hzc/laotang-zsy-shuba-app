@@ -62,6 +62,7 @@
 					{name}
 					<p class='mui-ellipsis'>{desc}</p>
 				</div>
+				<div id='download-progress-{id}' class="mui-pull-right my-height" style="display: none;">0%</div>
 				<div id='download-{id}' class="mui-icon mui-icon-pulldown mui-pull-right my-height" style="display: {display};"></div>
 			</a>
 		</li>
@@ -149,9 +150,10 @@
 					}
 					window.__downloading = true;
 					mui.toast('开始下载');
-					setDownloadImage('img-' + bookId);
-					$id('img-' + bookId).classList.add('donghua');
+//					setDownloadImage('img-' + bookId);
+//					$id('img-' + bookId).classList.add('donghua');
 					$id('download-' + bookId).style.display = 'none';
+					$id('download-progress-'+bookId).style.display = 'block';
 					bookSelf.setAttribute('download-start', 'true');
 					//开始下载图书
 					downloadSource(loadUrl, function() {
@@ -179,16 +181,18 @@
 							downloadSource(suburl, function() {
 								progress += 1;
 								var jindu = (progress / jll) * 100;
-								console.log(jindu + '---------------------------------------------------')
+								$id('download-progress-'+bookId).innerHTML = parseInt(jindu)+'%';
+//								console.log(jindu + '---------------------------------------------------')
 								if (progress == jll) {
 									saveBook(newBook, function() {
 										window.__downloading = false;
 										mui.toast(bookName + ',下载成功');
-										setImg('img-' + bookId, imgPath);
-										$id('img-' + bookId).classList.remove('donghua');
+//										setImg('img-' + bookId, imgPath);
+//										$id('img-' + bookId).classList.remove('donghua');
 										bookSelf.setAttribute('data-is-download', '1');
 										console.log('数据库更新成功');
 										saveBookIds();
+										$id('download-progress-'+bookId).style.display = 'none';
 									});
 								}
 							}, function() {
