@@ -156,11 +156,11 @@
 					"ipad": {}
 				},
 				"android": {
-					"mdpi": "images/source/240-282-1.png", /*普通屏启动图片，分辨率：240x282*/
-					"ldpi": "images/source/320-442-1.png", /*大屏启动图片，分辨率：320x442*/
-					"hdpi": "images/source/480-762-1.png", /*高分屏启动图片，分辨率：480x762*/
-					"xhdpi": "images/source/720-1242-1.png", /*720P高分屏启动图片，分辨率：720x1242*/
-					"xxhdpi": "images/source/1080-1882-1.png"
+					"mdpi": "unpackage/source/240-282.png", /*普通屏启动图片，分辨率：240x282*/
+					"ldpi": "unpackage/source/320-442.png", /*大屏启动图片，分辨率：320x442*/
+					"hdpi": "unpackage/source/480-762.png", /*高分屏启动图片，分辨率：480x762*/
+					"xhdpi": "unpackage/source/720-1242.png", /*720P高分屏启动图片，分辨率：720x1242*/
+					"xxhdpi": "unpackage/source/1080-1882.png"
 				}
 			},
 			"debug": false

@@ -121,6 +121,7 @@
 						pdfWin.evalJS(saveScroll.toString());
 						var oldBack = mui.back;
 						mui.back = function() {
+							console.log(111)
 //							plus.screen.lockOrientation("portrait");
 							pdfWin.evalJS("window.saveScroll('" + window.scalKey + "')");
 							plus.webview.currentWebview().opener().evalJS("mui.plusReady(function(){plus.screen.lockOrientation('portrait');})")

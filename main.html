@@ -159,7 +159,7 @@
 						</ul>
 						<ul class="mui-table-view" style="margin-top: 25px;">
 							<li class="mui-table-view-cell">
-								<a onclick="logout()" data-href="logout" style="text-align: center;color: #FF3B30;">
+								<a id="logout" data-href="logout" style="text-align: center;color: #FF3B30;">
 								退出登录
 							</a>
 							</li>
@@ -230,6 +230,7 @@
 			navTab();
 			doSearch();
 			deleteBook();
+			logout();
 			//			update();
 		});
 		/**
@@ -243,7 +244,7 @@
 						if (e.index == 0) {
 							var bookId = elem.getAttribute('data-id');
 							updateBookStatus(bookId, 0, function() {
-								saveBookIds(function(){
+								saveBookIds(function() {
 									console.log(22222)
 								})
 								var li = elem.parentElement.parentElement;
@@ -429,19 +430,24 @@
 			 */
 
 		function logout() {
-				var btnArray = ['是', '否'];
-				mui.confirm('确定要退出登录吗？', '', btnArray, function(e) {
-					if (e.index == 0) {
-						setLoginStatus('false');
-						mui.openWindow({
-							id: 'login-id',
-							url: 'login.html',
-							show: {
-								duration: 200
-							}
-						});
-						plus.webview.getWebviewById('tab-webview-main-id').close()
-					}
+				document.getElementById("logout").addEventListener('tap', function() {
+					var btnArray = ['是', '否'];
+					mui.confirm('确定要退出登录吗？', '', btnArray, function(e) {
+						if (e.index == 0) {
+							plus.downloader.clear();
+							setLoginStatus('false');
+							mui.openWindow({
+								id: 'login-id',
+								url: 'login.html',
+								show: {
+									duration: 200
+								}
+							});
+							setTimeout(function() {
+								plus.webview.getWebviewById('tab-webview-main-id').close();
+							}, 2000);
+						}
+					});
 				});
 			}
 			/**
@@ -480,6 +486,7 @@
 		mui.back = function(event) {
 			backButtonPress++;
 			if (backButtonPress > 1) {
+				plus.downloader.clear();
 				plus.runtime.quit();
 			} else {
 				plus.nativeUI.toast('再按一次退出应用');
