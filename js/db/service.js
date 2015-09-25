@@ -138,10 +138,10 @@ function saveBook(book, callback) {
 	sDb.transaction(function(tx) {
 		var sql = "insert into dic_book (id,name,img_path,html_name,dic_category_id,json,desc,status) values (?,?,?,?,?,?,?,?)";
 		tx.executeSql(sql, [book.id, book.name, book.imgPath, book.htmlName, book.dicCategoryId, book.jsonList, book.desc, book.status],
-			callback, function(tx, error){
-				var msg =error.message.toString();
-				if(msg.indexOf('unique')>0){
-					updateBookStatus(book.id,1,callback);
+			callback, function(tx, error) {
+				var msg = error.message.toString();
+				if (msg.indexOf('unique') > 0) {
+					updateBookStatus(book.id, 1, callback);
 				}
 			});
 	});
@@ -188,16 +188,14 @@ function saveBookIds(callback) {
 	sDb.transaction(function(tx) {
 		var sql = 'select id from dic_book where status = 1';
 		tx.executeSql(sql, [], function(tx, rs) {
-//			console.log(JSON.stringify(rs.rows));
+			var ids = '';
 			if (rs.rows.length > 0) {
-				var ids = '';
 				for (var i = 0; i < rs.rows.length; i++) {
 					var bookId = rs.rows.item(i).id;
 					ids = bookId + ',' + ids;
 				}
-//				console.log(ids);
-				saveBookIdsInStorage(ids);
 			}
+			saveBookIdsInStorage(ids);
 			callback;
 		}, onError);
 	});
@@ -208,9 +206,21 @@ function saveBookIds(callback) {
  * @param {Object} id
  * @param {Object} status ： 0：不可用，1：可用
  */
-function updateBookStatus(id, status,callback) {
+function updateBookStatus(id, status, callback) {
 	sDb.transaction(function(tx) {
 		var sql = 'update dic_book set status = ? where id = ?';
 		tx.executeSql(sql, [status, id], callback, onError)
 	})
+}
+
+/**
+ * 删除图书 
+ * @param {Object} id
+ * @param {Object} callback
+ */
+function deleteBooks(id, callback) {
+	sDb.transaction(function(tx) {
+		var sql = 'delete from dic_book where id = ?';
+		tx.executeSql(sql, [id], callback, onError);
+	});
 }

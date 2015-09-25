@@ -1,4 +1,4 @@
-var server = "http://bluejings.club:8090/bluejings/update.json"; //获取升级描述文件服务器地址
+var server = "http://182.92.109.194:8001/appInstall/zsysb/update.json"; //获取升级描述文件服务器地址
 
 /**
  * 自动验证，并更新app

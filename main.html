@@ -199,7 +199,7 @@
     -->
 
 	<script type="text/javascript" src="js/jquery.min.js" type="text/javascript" charset="UTF-8"></script>
-	<script type="text/javascript" src="http://oltop.cn:3333/rpc/helper.js" type="text/javascript" charset="UTF-8"></script>
+	<script type="text/javascript" src="http://182.92.109.194:8080/rpc/helper.js" type="text/javascript" charset="UTF-8"></script>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/routes.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/update.js" type="text/javascript" charset="utf-8"></script>
@@ -231,7 +231,6 @@
 			doSearch();
 			deleteBook();
 			logout();
-			//			update();
 		});
 		/**
 		 * 删除图书
@@ -243,12 +242,19 @@
 					mui.confirm('确认删除该条记录？', '', btnArray, function(e) {
 						if (e.index == 0) {
 							var bookId = elem.getAttribute('data-id');
-							updateBookStatus(bookId, 0, function() {
-								saveBookIds(function() {
-									console.log(22222)
-								})
+							deleteBooks(bookId, function() {
+								saveBookIds(function() {})
 								var li = elem.parentElement.parentElement;
-								li.parentElement.removeChild(li);
+								var p = li.parentElement;
+								p.removeChild(li);
+								console.log(p.children.length);
+								if (p.children.length == 0) {
+									var li = document.createElement('li');
+									li.className = 'mui-table-view-cell mui-media';
+									li.innerHTML = '<div style="text-align: center;margin-right: -60px;">没有相关图书</div>';
+									//p.appendChild('<li id="loading-id" class="mui-table-view-cell mui-media"><div style="text-align: center;margin-right: -60px;">加载中...</div></li>');
+									p.appendChild(li);
+								}
 							});
 						}
 					});
@@ -315,6 +321,7 @@
 					var tempHtml = $id('book-temp-id').innerHTML;
 					try {
 						$id('loading-id').style.display = 'none';
+						$id('loading-id').parentElement.removeChild($id('loading-id'))
 					} catch (e) {}
 					if (toastNetworkInfo('当前网络不可用')) {
 						listDelPdfId(function(delData) {
