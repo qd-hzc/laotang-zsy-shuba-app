@@ -14,7 +14,7 @@
 			.my-font {
 				font-size: 28px;
 			}
-			.my-A{
+			.my-A {
 				height: 80%;
 			}
 		</style>
@@ -24,11 +24,11 @@
 		<header id="header" class="mui-bar mui-bar-nav" style="padding-top: 10px;">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="padding-top: 0px;margin-right: 5px;"></a>
 			<!--<a id="zoom-jian" class="my-font">A-</a>-->
-			<img id="zoom-jia" src="../images/common/A+.png" class="my-A"/>
+			<img id="zoom-jia" src="../images/common/A+.png" class="my-A" />
 			<!--<a id="zoom-jia" class="my-font" style="margin-left: 15px;">A＋</a>-->
-			<img id="zoom-jian" src="../images/common/A-.png" class="my-A"/>
+			<img id="zoom-jian" src="../images/common/A-.png" class="my-A" />
 			<!--<a id="zhuanhan" class="mui-icon mui-icon-loop" style="padding-top: 0px !important;font-weight: 800;"></a>-->
-			<img id="zhuanhan" src="../images/common/zhuanhuan.png" class="my-A"/>
+			<img id="zhuanhan" src="../images/common/zhuanhuan.png" class="my-A" />
 			<a onclick="hideBar()" class="mui-pull-right" style="padding-top: 0px;margin-right: 20px;">隐藏</a>
 		</header>
 		<div id="content" class="mui-content" style="margin: 0px;padding: 0px;width: 300px !important;overflow: hidden;">
@@ -69,7 +69,7 @@
 					};
 				}
 				mui.plusReady(function() {
-					//				plus.screen.lockOrientation("landscape");
+					//plus.screen.lockOrientation("landscape");
 					var self = plus.webview.currentWebview();
 					var _href = self.href;
 					window.screenRate = initBookScal();
@@ -114,15 +114,14 @@
 						var pdfWin = plus.webview.getWebviewById("pdf-id");
 
 						function saveScroll(sk) {
-//							var scroll_top = window.pdf2htmlEX.defaultViewer.container.scrollTop;
+							//var scroll_top = window.pdf2htmlEX.defaultViewer.container.scrollTop;
 							var scroll_top = window.document.getElementById('page-container').scrollTop;
 							window.localStorage.setItem(sk, scroll_top);
 						}
 						pdfWin.evalJS(saveScroll.toString());
 						var oldBack = mui.back;
 						mui.back = function() {
-							console.log(111)
-//							plus.screen.lockOrientation("portrait");
+							//plus.screen.lockOrientation("portrait");
 							pdfWin.evalJS("window.saveScroll('" + window.scalKey + "')");
 							plus.webview.currentWebview().opener().evalJS("mui.plusReady(function(){plus.screen.lockOrientation('portrait');})")
 							oldBack();
@@ -131,8 +130,8 @@
 
 						function scrol(sk) {
 							var t = window.localStorage.getItem(sk);
-//							if (t) window.pdf2htmlEX.defaultViewer.container.scrollTop = parseFloat(t);
-							if(t) window.document.getElementById('page-container').scrollTop = parseFloat(t);
+							//if (t) window.pdf2htmlEX.defaultViewer.container.scrollTop = parseFloat(t);
+							if (t) window.document.getElementById('page-container').scrollTop = parseFloat(t);
 						}
 
 						function zoom(s) {
@@ -140,27 +139,28 @@
 							meta.setAttribute('name', 'viewport');
 							var c = 'width=device-width,initial-scale=' + s + ',minimum-scale=0.1,maximum-scale=10,user-scalable=yes';
 							meta.setAttribute('content', c)
-//							console.log(document.getElementsByTagName('head')[0].innerHTML)
-//							console.log(document.innerHTML)
+								//console.log(document.getElementsByTagName('head')[0].innerHTML)
+								//console.log(document.innerHTML)
 						}
 						pdfWin.evalJS(zoom.toString());
-						//					var ss = window.localStorage.getItem(window.scalKey + 'scal');
-						//					window.zoom = ss ? parseFloat(ss) : window.screenRate.widthRate;
+						//var ss = window.localStorage.getItem(window.scalKey + 'scal');
+						//window.zoom = ss ? parseFloat(ss) : window.screenRate.widthRate;
 						window.zoomSize = window.zoomSize ? window.zoomSize : window.screenRate.widthRate;
-						//					window.zoom = window.screenRate.widthRate;
+						//window.zoom = window.screenRate.widthRate;
 						pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
 						document.getElementById("zoom-jia").addEventListener('tap', function() {
 							window.zoomSize += 0.1;
-//							console.log(window.zoomSize);
+							//							console.log(window.zoomSize);
 							changeScale(window.zoomSize);
 						});
 						document.getElementById("zoom-jian").addEventListener('tap', function() {
 							window.zoomSize -= 0.1;
-//							console.log(window.zoomSize)
+							//							console.log(window.zoomSize)
 							changeScale(window.zoomSize)
 						})
 						var orRes = true;
 						document.getElementById("zhuanhan").addEventListener('tap', function() {
+							plus.orientation.clearWatch(window.orien);
 							if (orRes) {
 								plus.screen.lockOrientation("landscape");
 								window.zoomSize = window.screenRate.heightRate;
@@ -172,26 +172,52 @@
 								pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
 								orRes = true;
 							}
-							window.addEventListener("orientationchange", function() {
-								var or = window.orientation;
-								if (or == 0) { //竖向
-									plus.screen.lockOrientation("portrait");
-									window.zoomSize = window.screenRate.widthRate;
-									pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
-								} else { //横向
-									plus.screen.lockOrientation("landscape");
-									window.zoomSize = window.screenRate.heightRate;
-									pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
-								}
-							}, false);
 						});
 
 						function changeScale(scale) {
 							var s = scale;
-							//						window.localStorage.setItem(window.scalKe//y + 'scal', s);
+							//window.localStorage.setItem(window.scalKe//y + 'scal', s);
 							pdfWin.evalJS("window.zoom(" + s + ")");
 						}
-					}, 2000)
+						setTimeout(function() {
+							window.orisize = 0;
+							window.orien = plus.orientation.watchOrientation(function(o) {
+//								console.log(o.alpha)
+//								console.log(window.orisize)
+								var al = o.alpha;
+								var cha = (al - window.orisize);
+								cha < 0 && (cha = (-cha))
+								if (cha < 50) {
+									return;
+								}
+								window.orisize = al;
+								if (0 <= o.alpha && o.alpha <= 90) { //竖屏
+									plus.screen.lockOrientation("portrait");
+									window.zoomSize = window.screenRate.widthRate;
+									pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
+									orRes = true;
+								} else if (90 < o.alpha && o.alpha <= 180) { //横屏
+									plus.screen.lockOrientation("landscape");
+									window.zoomSize = window.screenRate.heightRate;
+									pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
+									orRes = false;
+								} else if (180 < o.alpha && o.alpha <= 260) { //竖屏
+									plus.screen.lockOrientation("portrait");
+									window.zoomSize = window.screenRate.widthRate;
+									pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
+									orRes = true;
+								} else if (260 < o.alpha && o.alpha <= 360) { //横屏
+									plus.screen.lockOrientation("landscape");
+									window.zoomSize = window.screenRate.heightRate;
+									pdfWin.evalJS("window.zoom(" + window.zoomSize + ")");
+									orRes = false;
+								}
+								//console.log("Orientation\nAlpha:" + o.alpha + "\nBeta:" + o.beta + "\nGamma:" + o.gamma);
+							}, function(e) {
+								console.log("Orientation error: " + e.message);
+							});
+						}, 3000);
+					}, 2000);
 				});
 			})();
 	</script>
