@@ -22,6 +22,7 @@ function update(from) {
 				return;
 			}
 			plus.ui.confirm(data.note, function(i) {
+				console.log(JSON.stringify(i))
 				if (0 == i.index) { // 点击了: 立即更新
 					plus.runtime.openURL(data.url);
 				}

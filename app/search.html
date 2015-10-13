@@ -64,6 +64,7 @@
 					{name}
 					<p class='mui-ellipsis'>{desc}</p>
 				</div>
+				<div id='download-progress-{id}' class="mui-pull-right my-height" style="display: none;">0%</div>
 				<div id='download-{id}' class="mui-icon mui-icon-pulldown mui-pull-right my-height" style="display: {display};"></div>
 			</a>
 		</li>
@@ -154,19 +155,21 @@
 				var htmlDist = bookSelf.getAttribute('data-html-dist');
 				//服务器中书的下载地址
 				var loadUrl = Routes.urls.book.downloadBook + htmlDist + '/' + htmlName;
+				//				console.log(loadUrl)
 				//没有下载，则提示下载，并开始下载，下载成功更新数据库中的下载状态
 				if (isDownload == '0') {
 					if (bookSelf.getAttribute('download-start') == 'true') {
 						mui.toast('正在下载');
 						return;
 					}
+					window.__downloading = true;
 					mui.toast('开始下载');
-					setDownloadImage('img-' + bookId);
-					$id('img-' + bookId).classList.add('donghua');
+//					setDownloadImage('img-' + bookId);
+//					$id('img-' + bookId).classList.add('donghua');
 					$id('download-' + bookId).style.display = 'none';
+					$id('download-progress-'+bookId).style.display = 'block';
 					bookSelf.setAttribute('download-start', 'true');
 					//开始下载图书
-					//					console.log(loadUrl)
 					downloadSource(loadUrl, function() {
 						var bookName = bookSelf.getAttribute('data-name');
 						var dicCategoryId = bookSelf.getAttribute('data-category-id');
@@ -191,17 +194,24 @@
 							suburl = Routes.urls.book.getBooks + htmlDist + '/' + suburl;
 							downloadSource(suburl, function() {
 								progress += 1;
-								//								console.log(progress)
+								var jindu = (progress / jll) * 100;
+								$id('download-progress-'+bookId).innerHTML = parseInt(jindu)+'%';
+//								console.log(jindu + '---------------------------------------------------')
 								if (progress == jll) {
 									saveBook(newBook, function() {
+										window.__downloading = false;
 										mui.toast(bookName + ',下载成功');
-										setImg('img-' + bookId, imgPath);
-										$id('img-' + bookId).classList.remove('donghua');
+//										setImg('img-' + bookId, imgPath);
+//										$id('img-' + bookId).classList.remove('donghua');
 										bookSelf.setAttribute('data-is-download', '1');
 										console.log('数据库更新成功');
 										saveBookIds();
+										$id('download-progress-'+bookId).style.display = 'none';
 									});
 								}
+							}, function() {
+								window.__downloading = false;
+								mui.toast('下载失败');
 							});
 						}
 					}, function() {

@@ -107,30 +107,7 @@
             -->
 			<div id="tabbar-with-chat" class="mui-control-content">
 				<ul id="book-list-id" class="mui-table-view mui-grid-view  mui-grid-9">
-					<li class="mui-table-view-cell mui-media mui-col-xs-6">
-						<a href="javascript:void(0)" data-title='铁人精神' data-id='1'>
-							<img class="mui-media-object" src="images/index/tierenjingshen.png">
-							<div class="mui-media-body my-mui-media-body">铁人精神</div>
-						</a>
-					</li>
-					<li class="mui-table-view-cell mui-media mui-col-xs-6">
-						<a href="javascript:void(0)" data-title='国学' data-id='2'>
-							<img class="mui-media-object" src="images/index/guoxue.png">
-							<div class="mui-media-body my-mui-media-body">国学</div>
-						</a>
-					</li>
-					<li class="mui-table-view-cell mui-media mui-col-xs-6">
-						<a href="javascript:void(0)" data-title='励志' data-id='3'>
-							<img class="mui-media-object" src="images/index/lizhi.png">
-							<div class="mui-media-body my-mui-media-body">励志</div>
-						</a>
-					</li>
-					<li class="mui-table-view-cell mui-media mui-col-xs-6">
-						<a href="javascript:void(0)" data-title='企业管理' data-id='4'>
-							<img class="mui-media-object" src="images/index/qiyeguanli.png">
-							<div class="mui-media-body my-mui-media-body">企业管理</div>
-						</a>
-					</li>
+					
 				</ul>
 
 			</div>
@@ -251,7 +228,7 @@
 								if (p.children.length == 0) {
 									var li = document.createElement('li');
 									li.className = 'mui-table-view-cell mui-media';
-									li.innerHTML = '<div style="text-align: center;margin-right: -60px;">没有相关图书</div>';
+									li.innerHTML = '<div style="text-align: center;">没有相关图书</div>';
 									//p.appendChild('<li id="loading-id" class="mui-table-view-cell mui-media"><div style="text-align: center;margin-right: -60px;">加载中...</div></li>');
 									p.appendChild(li);
 								}
@@ -311,7 +288,7 @@
 					if (data.length < 1) {
 						mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
 						if (source == 1) {
-							$id('books-id').innerHTML = '<li class="mui-table-view-cell mui-media"><div style="text-align: center;margin-right: -60px;">没有相关图书</div></li>';
+							$id('books-id').innerHTML = '<li class="mui-table-view-cell mui-media"><div style="text-align: center;">没有相关图书</div></li>';
 						} else {
 							mui.toast('没有更多数据了');
 						}
